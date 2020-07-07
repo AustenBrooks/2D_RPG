@@ -1,2 +1,2 @@
 # 2D_RPG
-Using SDL to create a basic 2D RPG game.
+Using SDL to create a basic 2D RPG game in Visual Studio.

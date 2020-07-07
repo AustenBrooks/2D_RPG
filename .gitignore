@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/2D_RPG/2D_RPG/Sprites/forest_background.png
+/2D_RPG/2D_RPG/Sprites/BLU.BMP
+/2D_RPG/2D_RPG/Sprites/Collision.png

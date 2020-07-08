@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="character.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -157,11 +158,16 @@
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="character.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Sprites\forest.bmp" />
+    <Image Include="Sprites\forest.png" />
+    <Image Include="Sprites\Mario &amp; Luigi.png" />
+    <Image Include="Sprites\Mario x2.png" />
+    <Image Include="Sprites\Mario.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

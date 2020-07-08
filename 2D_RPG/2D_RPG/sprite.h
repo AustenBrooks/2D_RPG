@@ -40,6 +40,7 @@ public:
 	sprite(string filename);
 
 	void createTexture(SDL_Renderer* renderer);
+	void moveTo(int posX, int posY);
 
 	SDL_Rect getRectangle();
 	bool getCollision();
@@ -50,8 +51,8 @@ public:
 	bool getNeedsUpdate();
 	facing getDirection();
 
+	void setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
 	void setSpriteSheet(string filepath);
 };
-
 
 #endif

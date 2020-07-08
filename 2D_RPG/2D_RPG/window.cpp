@@ -1,5 +1,4 @@
 #include "window.h"
-#include <iostream>
 
 window::window() {
 	windowWidth = 1280;
@@ -14,7 +13,7 @@ window::window(int width, int height) {
 	windowHeight = height;
 
 	SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WINDOW_RESIZABLE, &win, &renderer);
-	SDL_SetWindowTitle(win, "Default");
+	SDL_SetWindowTitle(win, "RPG");
 
 	SDL_RenderSetLogicalSize(renderer, width, height);
 }
@@ -23,7 +22,7 @@ window::~window() {
 	SDL_DestroyWindow(win);
 }
 
-void window::drawFrame(sprite background, vector<sprite> platforms, vector<sprite> actors) {
+void window::drawFrame(sprite background, vector<sprite> platforms, vector<sprite> charSprites) {
 	SDL_RenderClear(renderer);
 
 	renderSprite(background);
@@ -32,8 +31,8 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<sprit
 		renderSprite(platforms.at(i));
 	}
 
-	for (int i = 0; i < actors.size(); i++) {
-		renderSprite(actors.at(i));
+	for (int i = 0; i < charSprites.size(); i++) {
+		renderSprite(charSprites.at(i));
 	}
 	
 	SDL_RenderPresent(renderer);

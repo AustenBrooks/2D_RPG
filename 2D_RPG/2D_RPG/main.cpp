@@ -3,6 +3,7 @@
 #include "input.h"
 #include "game.h"
 #include "sprite.h"
+#include "character.h"
 
 int main(int argc, char* args[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -10,12 +11,13 @@ int main(int argc, char* args[]) {
 	SDL_Event events;
 	input inputs;
 
-	sprite background("Sprites/forest.bmp");
+	sprite background("Sprites/forest.png");
 	vector<sprite> platforms;
-	vector<sprite> actors;
+	vector<character> actors;
 
-	background.createTexture(newWindow.getRenderer());
-	
+	character player("austen", bandit);
+	actors.push_back(player);
+
 	while (1) {
 		int timeStart = SDL_GetTicks();
 		int elapsedTime = SDL_GetTicks() - timeStart;
@@ -24,14 +26,13 @@ int main(int argc, char* args[]) {
 			inputs.clearKeys();
 			SDL_PollEvent(&events);
 
-			newWindow.drawFrame(background, platforms, actors);
 			if (events.type == SDL_KEYDOWN && events.key.repeat == false) {
 				inputs.pressKey(events.key.keysym.scancode);
 			}
 			if (events.type == SDL_KEYUP) {
 				inputs.releaseKey(events.key.keysym.scancode);
 			}
-			if (events.type == SDL_QUIT || inputs.isKeyPressed(SDL_SCANCODE_ESCAPE)) {
+			if (events.type == SDL_QUIT) {
 				return 0;
 			}
 
@@ -40,57 +41,25 @@ int main(int argc, char* args[]) {
 				SDL_Delay(FRAME_TIME - elapsedTime);
 			}
 		}
+
+		vector<sprite> charSprites;
 		for (int i = 0; i < actors.size(); i++) {
-			if (actors.at(i).getNeedsUpdate()) {
-				actors.at(i).createTexture(newWindow.getRenderer());
+			charSprites.push_back(actors.at(i).getSprite());
+		}
+		for (int i = 0; i < charSprites.size(); i++) {
+			if (charSprites.at(i).getNeedsUpdate()) {
+				charSprites.at(i).createTexture(newWindow.getRenderer());
 			}
 		}
-
-		//create an index order based on Ypos of sprites
-		/*vector<int> spritePosY;
-		vector<int> indexOrder;
-		for (int i = 0; i < actors.size(); i++) {
-			int rectY = actors.at(i).getRectangle().y;
-			bool isHigher = false;
-			int indexHigher = -1;
-			int j;
-			for (j = 0; j < spritePosY.size(); j++) {
-				if (rectY < spritePosY.at(j)) {
-					isHigher = true;
-					indexHigher = j;
-					break;
-				}
-			}
-			if (isHigher) {
-				spritePosY.insert(spritePosY.begin() + j, rectY);
-				indexOrder.insert(indexOrder.begin() + j, i);
-			}
-			else {
-				spritePosY.push_back(rectY);
-				indexOrder.push_back(i);
+		for (int i = 0; i < platforms.size(); i++) {
+			if (platforms.at(i).getNeedsUpdate()) {
+				platforms.at(i).createTexture(newWindow.getRenderer());
 			}
 		}
-
-		//reaarange actors based on indexOrder
-		for (int i = 0; i < actors.size(); ++i) {
-			while (i != indexOrder.at(i)) {
-				int newIndex = indexOrder.at(i);
-				sprite temp = actors.at(i);
-				actors.at(i) = actors.at(newIndex);
-				actors.at(newIndex) = temp;
-
-				indexOrder.at(i) = indexOrder.at(newIndex);
-				indexOrder.at(newIndex) = newIndex;
-
-				if (i == playerIndex) {
-					playerIndex = newIndex;
-				}
-				else if (newIndex == playerIndex) {
-					playerIndex = i;
-				}
-			}
+		if (background.getNeedsUpdate()) {
+			background.createTexture(newWindow.getRenderer());
 		}
-		///*/
+		newWindow.drawFrame(background, platforms, charSprites);
 	}
 	return 0;
 }

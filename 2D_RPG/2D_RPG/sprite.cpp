@@ -6,13 +6,13 @@ sprite::sprite() {
 	r.w = 16;
 	r.h = 16;
 	hasCollision = true;
-	filepath = "";
-	spriteX = 16;
+	filepath = "Sprite/BLU.bmp";
+	spriteX = 0;
 	spriteY = 0;
 	currentAnimation = none;
-	direction = down;
+	direction = right;
 	animationFrame = 0;
-	doesSpriteNeedUpdate = false;
+	doesSpriteNeedUpdate = true;
 }
 
 sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY) {
@@ -53,6 +53,11 @@ void sprite::createTexture(SDL_Renderer* renderer) {
 	doesSpriteNeedUpdate = false;
 }
 
+void sprite::moveTo(int posX, int posY) {
+	r.x = posX;
+	r.y = posY;
+}
+
 SDL_Rect sprite::getRectangle() {
 	return r;
 }
@@ -83,6 +88,22 @@ bool sprite::getNeedsUpdate() {
 
 facing sprite::getDirection() {
 	return direction;
+}
+
+void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY) {
+	r.x = x;
+	r.y = y;
+	r.w = w;
+	r.h = h;
+	this->hasCollision = hasCollision;
+	filepath = filename;
+	spriteX = spriteSheetX;
+	spriteY = spriteSheetY;
+	currentAnimation = none;
+	direction = down;
+	animationFrame = 0;
+	doesSpriteNeedUpdate = true;
+	loadedSprite = IMG_Load(filepath.c_str());
 }
 
 void sprite::setSpriteSheet(string filepath) {

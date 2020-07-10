@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include <string>
 
-enum type {bandit, soldier, civilian};
+enum type {player, bandit, soldier, civilian};
 
 class character : sprite{
 private:

@@ -7,21 +7,34 @@
 
 int main(int argc, char* args[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window newWindow(1280, 720);
 	SDL_Event events;
+	window newWindow(1280, 720);
 	input inputs;
 
 	sprite background("Sprites/forest.png");
 	vector<sprite> platforms;
 	vector<character> actors;
 
-	character player("austen", bandit);
+	character player("austen", player);
 	actors.push_back(player);
 
-	while (1) {
+	bool isMainMenu = true;
+	bool isQuitting = false;
+
+	while (1) {	
+		if (isMainMenu) {
+			isQuitting = mainMenu(newWindow, inputs);
+			isMainMenu = false;
+		}
+
+		if (isQuitting) {
+			return 0;
+		}
+		
 		int timeStart = SDL_GetTicks();
 		int elapsedTime = SDL_GetTicks() - timeStart;
 		bool animating = false;
+
 		while (elapsedTime < FRAME_TIME) {
 			inputs.clearKeys();
 			SDL_PollEvent(&events);

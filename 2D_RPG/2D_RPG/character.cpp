@@ -31,7 +31,7 @@ character::character() {
 }
 
 character::character(string name, type base) {
-	if (base == bandit) {
+	if (base == player) {
 		sprite charSprite(0, 0, 32, 64, true, "Sprites/Mario x2.png", 2, 2);
 		this->charSprite = charSprite;
 

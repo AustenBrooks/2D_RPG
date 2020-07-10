@@ -30,6 +30,9 @@
     <ClCompile Include="character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -62,6 +65,30 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Sprites\Mario x2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\BLU.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\mainMenu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\play.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\playSelected.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\quit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\quitSelected.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\settings.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\settingsSelected.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

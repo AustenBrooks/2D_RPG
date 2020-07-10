@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 #include "sprite.h"
-#include "character.h"
 
 using std::vector;
 using std::string;

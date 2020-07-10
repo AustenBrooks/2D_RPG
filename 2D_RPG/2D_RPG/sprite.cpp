@@ -31,6 +31,7 @@ sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, i
 	loadedSprite = IMG_Load(filepath.c_str());
 }
 
+//for setting background image
 sprite::sprite(string filename) {
 	r.x = 0;
 	r.y = 0;

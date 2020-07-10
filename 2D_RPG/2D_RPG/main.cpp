@@ -16,7 +16,10 @@ int main(int argc, char* args[]) {
 	vector<character> actors;
 
 	character player("austen", player);
+	player.moveTo(120, 120);
+	player.setCharSprite(player.getSprite().getFilePath(), 36, 2);
 	actors.push_back(player);
+
 
 	bool isMainMenu = true;
 	bool isQuitting = false;

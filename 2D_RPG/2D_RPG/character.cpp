@@ -61,12 +61,18 @@ character::character(string name, type base) {
 	this->name = name;
 }
 
-void character::setCharSprite(string filename, int spriteSheetX, int spriteSheetY) {
-	SDL_Rect r;
-	r = this->charSprite.getRectangle();
-	sprite charSprite(r.x, r.y, r.w, r.h, this->charSprite.getCollision(), filename, spriteSheetX, spriteSheetY);
-	this->charSprite = charSprite;
+void character::moveTo(int xPos, int yPos) {
+	charSprite.moveTo(xPos, yPos);
 }
+
+facing character::getDirection() {
+	return direction;
+}
+
+void character::setCharSprite(string filename, int spriteSheetX, int spriteSheetY) {
+	charSprite.setSpriteSheet(filename, spriteSheetX, spriteSheetY);
+}
+
 sprite character::getSprite() {
 	return charSprite;
 }

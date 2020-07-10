@@ -9,9 +9,6 @@ sprite::sprite() {
 	filepath = "Sprite/BLU.bmp";
 	spriteX = 0;
 	spriteY = 0;
-	currentAnimation = none;
-	direction = right;
-	animationFrame = 0;
 	doesSpriteNeedUpdate = true;
 }
 
@@ -24,9 +21,6 @@ sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, i
 	filepath = filename;
 	spriteX = spriteSheetX;
 	spriteY = spriteSheetY;
-	currentAnimation = none;
-	direction = down;
-	animationFrame = 0;
 	doesSpriteNeedUpdate = true;
 	loadedSprite = IMG_Load(filepath.c_str());
 }
@@ -41,9 +35,6 @@ sprite::sprite(string filename) {
 	filepath = filename;
 	spriteX = 0;
 	spriteY = 0;
-	currentAnimation = none;
-	direction = down;
-	animationFrame = 0;
 	doesSpriteNeedUpdate = true;
 	loadedSprite = IMG_Load(filepath.c_str());
 }
@@ -87,10 +78,6 @@ bool sprite::getNeedsUpdate() {
 	return doesSpriteNeedUpdate;
 }
 
-facing sprite::getDirection() {
-	return direction;
-}
-
 void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY) {
 	r.x = x;
 	r.y = y;
@@ -100,9 +87,6 @@ void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string fil
 	filepath = filename;
 	spriteX = spriteSheetX;
 	spriteY = spriteSheetY;
-	currentAnimation = none;
-	direction = down;
-	animationFrame = 0;
 	doesSpriteNeedUpdate = true;
 	loadedSprite = IMG_Load(filepath.c_str());
 }
@@ -113,3 +97,16 @@ void sprite::setSpriteSheet(string filepath) {
 	doesSpriteNeedUpdate = true;
 }
 
+void sprite::setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY) {
+	spriteX = spriteSheetX;
+	spriteY = spriteSheetY;
+
+	this->filepath = filepath;
+	loadedSprite = IMG_Load(filepath.c_str());
+	doesSpriteNeedUpdate = true;
+}
+
+void sprite::setSpriteXY(int spriteSheetX, int spriteSheetY) {
+	spriteX = spriteSheetX;
+	spriteY = spriteSheetY;
+}

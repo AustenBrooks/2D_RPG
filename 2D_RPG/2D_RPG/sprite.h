@@ -7,14 +7,6 @@
 
 using std::string;
 
-enum animation {
-	none,
-	walkingUp, walkingDown, walkingLeft, walkingRight,
-	runningUp, runningDown, runningLeft, runningRight
-};
-
-enum facing {up, down, left, right};
-
 class sprite {
 private:
 	SDL_Rect r;
@@ -23,11 +15,6 @@ private:
 	bool hasCollision;
 
 	string filepath;
-
-	int animationFrame;
-
-	animation currentAnimation;
-	facing direction;
 
 	SDL_Surface* loadedSprite;
 	SDL_Texture* spriteSheet;
@@ -49,10 +36,12 @@ public:
 	int getSpriteY();
 	SDL_Texture* getSpriteSheet();
 	bool getNeedsUpdate();
-	facing getDirection();
 
 	void setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
+
 	void setSpriteSheet(string filepath);
+	void setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY);
+	void setSpriteXY(int spriteSheetX, int spriteSheetY);
 };
 
 #endif

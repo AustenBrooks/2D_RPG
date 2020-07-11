@@ -22,13 +22,16 @@ private:
 	bool doesSpriteNeedUpdate;
 
 public:
+	//constructors
 	sprite();
 	sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
 	sprite(string filename);
 
+	//functions
 	void createTexture(SDL_Renderer* renderer);
 	void moveTo(int posX, int posY);
 
+	//getters
 	SDL_Rect getRectangle();
 	bool getCollision();
 	string getFilePath();
@@ -37,8 +40,8 @@ public:
 	SDL_Texture* getSpriteSheet();
 	bool getNeedsUpdate();
 
+	//setters
 	void setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
-
 	void setSpriteSheet(string filepath);
 	void setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY);
 	void setSpriteXY(int spriteSheetX, int spriteSheetY);

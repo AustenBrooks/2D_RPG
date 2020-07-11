@@ -17,9 +17,7 @@ int main(int argc, char* args[]) {
 
 	character player("austen", player);
 	player.moveTo(120, 120);
-	player.setCharSprite(player.getSprite().getFilePath(), 36, 2);
 	actors.push_back(player);
-
 
 	bool isMainMenu = true;
 	bool isQuitting = false;
@@ -52,30 +50,48 @@ int main(int argc, char* args[]) {
 				return 0;
 			}
 
+			//check if the player is animating
+			if (actors.at(0).animate());
+			//if not, do the game
+			else {
+				if (inputs.isKeyPressed(SDL_SCANCODE_I)) {
+					actors.at(0).attack();
+				}
+
+				//TODO: add the game lol
+
+			}
+
+			//turn actors into sprite vector
+			vector<sprite> charSprites;
+			for (int i = 0; i < actors.size(); i++) {
+				charSprites.push_back(actors.at(i).getSprite());
+			}
+
+			//update all textures for sprites
+			for (int i = 0; i < charSprites.size(); i++) {
+				if (charSprites.at(i).getNeedsUpdate()) {
+					charSprites.at(i).createTexture(newWindow.getRenderer());
+				}
+			}
+			for (int i = 0; i < platforms.size(); i++) {
+				if (platforms.at(i).getNeedsUpdate()) {
+					platforms.at(i).createTexture(newWindow.getRenderer());
+				}
+			}
+			if (background.getNeedsUpdate()) {
+				background.createTexture(newWindow.getRenderer());
+			}
+
+			//draw 1 frame
+			newWindow.drawFrame(background, platforms, charSprites);
+
+			//this is to ensure the game doesn't run > 60 fps, doing it this way does tie physics to fps, which isn't ideal
 			elapsedTime = SDL_GetTicks() - timeStart;
 			if (elapsedTime < FRAME_TIME) {
 				SDL_Delay(FRAME_TIME - elapsedTime);
 			}
 		}
-
-		vector<sprite> charSprites;
-		for (int i = 0; i < actors.size(); i++) {
-			charSprites.push_back(actors.at(i).getSprite());
-		}
-		for (int i = 0; i < charSprites.size(); i++) {
-			if (charSprites.at(i).getNeedsUpdate()) {
-				charSprites.at(i).createTexture(newWindow.getRenderer());
-			}
-		}
-		for (int i = 0; i < platforms.size(); i++) {
-			if (platforms.at(i).getNeedsUpdate()) {
-				platforms.at(i).createTexture(newWindow.getRenderer());
-			}
-		}
-		if (background.getNeedsUpdate()) {
-			background.createTexture(newWindow.getRenderer());
-		}
-		newWindow.drawFrame(background, platforms, charSprites);
 	}
 	return 0;
 }

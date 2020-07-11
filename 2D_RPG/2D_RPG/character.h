@@ -10,8 +10,9 @@ enum type {player, bandit, soldier, civilian};
 
 enum animation {
 	none,
-	walkingUp, walkingDown, walkingLeft, walkingRight,
-	runningUp, runningDown, runningLeft, runningRight
+	walkLeft, walkRight, 
+	jump, crouch, fall,
+	swing
 };
 
 enum facing {up, down, left, right};
@@ -36,23 +37,26 @@ private:
 
 	string name;
 
-	int animationFrame;
-	animation currentAnimation;
-	facing direction;
+	int animationFrame = 0;
+	animation currentAnimation = none;
+	facing direction = right;
 
 public:
+	//constructors
 	character();
 	character(string name, type base);
 
-
+	//class functions
 	void moveTo(int xPos, int yPos);
+	bool animate();
+	void attack();
 
-
+	//getters
 	facing getDirection();
-
-	void setCharSprite(string filename, int spriteSheetX, int spriteSheetY);
 	sprite getSprite();
-};
 
+	//setters
+	void setCharSprite(string filename, int spriteSheetX, int spriteSheetY);
+};
 
 #endif

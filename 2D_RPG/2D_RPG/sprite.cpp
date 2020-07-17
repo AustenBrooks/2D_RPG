@@ -50,6 +50,17 @@ void sprite::moveTo(int posX, int posY) {
 	r.y = posY;
 }
 
+void sprite::moveBy(int x, int y) {
+	r.x += x;
+	r.y += y;
+	if (r.x < 0) {
+		r.x = 0;
+	}
+	if (r.y < 0) {
+		r.y = 0;
+	}
+}
+
 SDL_Rect sprite::getRectangle() {
 	return r;
 }

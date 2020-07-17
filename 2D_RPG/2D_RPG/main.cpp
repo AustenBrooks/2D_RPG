@@ -16,7 +16,7 @@ int main(int argc, char* args[]) {
 	vector<character> actors;
 
 	character player("austen", player);
-	player.moveTo(120, 120);
+	player.moveTo(120, 600);
 	actors.push_back(player);
 
 	bool isMainMenu = true;
@@ -29,7 +29,7 @@ int main(int argc, char* args[]) {
 		}
 
 		if (isQuitting) {
-			return 0;
+			break;
 		}
 		
 		int timeStart = SDL_GetTicks();
@@ -52,10 +52,13 @@ int main(int argc, char* args[]) {
 
 			//check if the player is animating
 			if (actors.at(0).animate());
-			//if not, do the game
+			//if not, collect input
 			else {
-				if (inputs.isKeyPressed(SDL_SCANCODE_I)) {
-					actors.at(0).attack();
+				if (inputs.isKeyPressed(SDL_SCANCODE_D) || inputs.isKeyHeld(SDL_SCANCODE_D)) {
+					actors.at(0).rightWalk();
+				}
+				else if (inputs.isKeyPressed(SDL_SCANCODE_A) || inputs.isKeyHeld(SDL_SCANCODE_A)) {
+					actors.at(0).leftWalk();
 				}
 
 				//TODO: add the game lol

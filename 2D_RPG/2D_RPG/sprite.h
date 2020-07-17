@@ -30,6 +30,7 @@ public:
 	//functions
 	void createTexture(SDL_Renderer* renderer);
 	void moveTo(int posX, int posY);
+	void moveBy(int x, int y);
 
 	//getters
 	SDL_Rect getRectangle();

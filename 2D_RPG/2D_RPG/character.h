@@ -10,7 +10,7 @@ enum type {player, bandit, soldier, civilian};
 
 enum animation {
 	none,
-	walkLeft, walkRight, 
+	walkLeft, walkRight, turn,
 	jump, crouch, fall,
 	swing
 };
@@ -49,7 +49,15 @@ public:
 	//class functions
 	void moveTo(int xPos, int yPos);
 	bool animate();
+
 	void attack();
+	
+	void rightWalk();
+	void turnRight();
+	
+	void leftWalk();
+	void turnLeft();
+
 
 	//getters
 	facing getDirection();

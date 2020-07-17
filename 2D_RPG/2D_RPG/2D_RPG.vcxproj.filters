@@ -52,19 +52,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Sprites\forest.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Sprites\forest.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Sprites\Mario.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Sprites\Mario &amp; Luigi.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Sprites\Mario x2.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Sprites\BLU.bmp">
@@ -89,6 +77,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Sprites\settingsSelected.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Sprites\basic animations.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

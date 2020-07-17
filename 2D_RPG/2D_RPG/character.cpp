@@ -32,7 +32,7 @@ character::character() {
 
 character::character(string name, type base) {
 	if (base == player) {
-		sprite charSprite(0, 0, 32, 64, true, "Sprites/Mario.png", 2, 2);
+		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 0, 0);
 		this->charSprite = charSprite;
 
 		strength = 10;
@@ -70,7 +70,75 @@ bool character::animate() {
 	if (currentAnimation == none) {
 		return false;
 	}
-	else if (currentAnimation == swing && direction == right) {
+	if (currentAnimation == walkRight) {
+		if (!(animationFrame % 4)) {
+			charSprite.moveBy(1, 0);
+		}
+		animationFrame++;
+		
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(66, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(33, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(99, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(33, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(33, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == walkLeft) {
+		if (animationFrame % 4 == 0) {
+			charSprite.moveBy(-1, 0);
+		}
+		animationFrame++;
+
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(165, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(132, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(198, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(132, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(132, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == turn) {
+		if (animationFrame > 16) {
+			animationFrame = 0;
+		}
+		animationFrame++;
+
+		if (animationFrame == 16) {
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == swing && direction == right) {
 		animationFrame++;
 		if (animationFrame <= 2) {
 			charSprite.setSpriteXY(444, 2);
@@ -84,17 +152,53 @@ bool character::animate() {
 		else if (animationFrame <= 10) {
 			charSprite.setSpriteXY(546, 2);
 		}
-		if (animationFrame > 10) {
+		else if (animationFrame > 10) {
 			charSprite.setSpriteXY(2, 2);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
+		return true;
 	}
 }
 
 void character::attack() {
 	if (currentAnimation == none) {
 		currentAnimation = swing;
+		return;
+	}
+}
+
+void character::rightWalk() {
+	if (currentAnimation == none && direction == right) {
+		currentAnimation = walkRight;
+		return;
+	}
+	turnRight();	
+}
+
+void character::turnRight() {
+	if (currentAnimation == none) {
+		charSprite.setSpriteXY(33, 0);
+		direction = right;
+		currentAnimation = turn;
+		return;
+	}
+}
+
+void character::leftWalk() {
+	if (currentAnimation == none && direction == left) {
+		currentAnimation = walkLeft;
+		return;
+	}
+	turnLeft();
+}
+
+void character::turnLeft() {
+	if (currentAnimation == none) {
+		charSprite.setSpriteXY(132, 0);
+		direction = left;
+		currentAnimation = turn;
+		return;
 	}
 }
 

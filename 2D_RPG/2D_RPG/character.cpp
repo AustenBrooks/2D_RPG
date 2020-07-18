@@ -75,7 +75,32 @@ bool character::animate() {
 			charSprite.moveBy(1, 0);
 		}
 		animationFrame++;
-		
+
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(66, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(33, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(99, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(33, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(33, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == walkRightStill) {
+		animationFrame++;
+
 		if (animationFrame <= 16) {
 			charSprite.setSpriteXY(66, 0);
 		}
@@ -126,6 +151,31 @@ bool character::animate() {
 		}
 		return true;
 	}
+	if (currentAnimation == walkLeftStill) {
+		animationFrame++;
+
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(165, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(132, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(198, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(132, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(132, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
 	if (currentAnimation == turn) {
 		if (animationFrame > 16) {
 			animationFrame = 0;
@@ -133,27 +183,6 @@ bool character::animate() {
 		animationFrame++;
 
 		if (animationFrame == 16) {
-			animationFrame = 0;
-			currentAnimation = none;
-		}
-		return true;
-	}
-	if (currentAnimation == swing && direction == right) {
-		animationFrame++;
-		if (animationFrame <= 2) {
-			charSprite.setSpriteXY(444, 2);
-		}
-		else if (animationFrame <= 4) {
-			charSprite.setSpriteXY(478, 2);
-		}
-		else if (animationFrame <= 6) {
-			charSprite.setSpriteXY(512, 2);
-		}
-		else if (animationFrame <= 10) {
-			charSprite.setSpriteXY(546, 2);
-		}
-		else if (animationFrame > 10) {
-			charSprite.setSpriteXY(2, 2);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
@@ -176,6 +205,14 @@ void character::rightWalk() {
 	turnRight();	
 }
 
+void character::rightWalkStill() {
+	if (currentAnimation == none && direction == right) {
+		currentAnimation = walkRightStill;
+		return;
+	}
+	turnRight();
+}
+
 void character::turnRight() {
 	if (currentAnimation == none) {
 		charSprite.setSpriteXY(33, 0);
@@ -193,6 +230,14 @@ void character::leftWalk() {
 	turnLeft();
 }
 
+void character::leftWalkStill() {
+	if (currentAnimation == none && direction == left) {
+		currentAnimation = walkLeftStill;
+		return;
+	}
+	turnLeft();
+}
+
 void character::turnLeft() {
 	if (currentAnimation == none) {
 		charSprite.setSpriteXY(132, 0);
@@ -200,6 +245,10 @@ void character::turnLeft() {
 		currentAnimation = turn;
 		return;
 	}
+}
+
+void character::createTexture(SDL_Renderer* renderer) {
+	charSprite.createTexture(renderer);
 }
 
 facing character::getDirection() {

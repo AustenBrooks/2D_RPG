@@ -9,6 +9,8 @@
 
 bool mainMenu(window& newWindow, input inputs);
 
+bool checkCollision(character player, vector<sprite> objects, facing direction);
+
 #define FPS 60
 #define FRAME_TIME (float)(1000 / FPS)
 

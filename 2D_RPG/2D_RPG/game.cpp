@@ -62,7 +62,6 @@ bool mainMenu(window& newWindow, input inputs) {
 		}
 
 		//highlight selected button
-		vector<sprite> none;
 		if ((int)cursor == 0) {
 			buttons.at(0).setSpriteSheet("Sprites/playSelected.png");
 		}
@@ -90,6 +89,74 @@ bool mainMenu(window& newWindow, input inputs) {
 		}
 
 		//draw the frame
-		newWindow.drawFrame(background, buttons, none);
+		newWindow.drawFrame(background, buttons);
 	}
+}
+
+
+bool checkCollision(character player, vector<sprite> objects, facing direction) {
+	int playerX = player.getSprite().getRectangle().x;
+	int playerY = player.getSprite().getRectangle().y;
+	int playerW = player.getSprite().getRectangle().w;
+	int playerH = player.getSprite().getRectangle().h;
+	
+	int playerLeft = player.getSprite().getRectangle().x;
+	int playerRight = player.getSprite().getRectangle().x + player.getSprite().getRectangle().w;
+	int playerTop = player.getSprite().getRectangle().y;
+	int playerBottom = player.getSprite().getRectangle().y + player.getSprite().getRectangle().h;
+
+	/*
+	int farLeft = objects.at(i).getRectangle().x;
+	int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
+	int top = objects.at(i).getRectangle().y;
+	int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
+	*/
+
+	int walkDistance = 16;
+
+	if (direction == right) {
+		for (int i = 0; i < objects.size(); i++) {
+			//if object has collision check its position
+			if (objects.at(i).getCollision()) {
+				int farLeft = objects.at(i).getRectangle().x;
+				int top = objects.at(i).getRectangle().y;
+				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
+
+				//if the object is to the right of player and to the left of where the player will be, check y pos
+				if ((playerRight) < farLeft && (playerRight + walkDistance) > farLeft) {
+					//if the object is not (above the player or below the players feet) return false
+					if (!((playerTop > bottom) || (playerBottom < top))) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	if (direction == left) {
+		for (int i = 0; i < objects.size(); i++) {
+			//if object has collision check its position
+			if (objects.at(i).getCollision()) {
+				int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
+				int top = objects.at(i).getRectangle().y;
+				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
+
+				//if the object is to the left of player and to the right of where the player will be, check y pos
+				if ((playerLeft > farRight) && ((playerLeft - walkDistance) < (farRight))) {
+					//if the object is not (above the player or below the players feet) return false
+					if (!((playerTop > bottom) || (playerBottom < top))) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	if (direction == up) {
+
+	}
+	if (direction == down) {
+
+	}
+
 }

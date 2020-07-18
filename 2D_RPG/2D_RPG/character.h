@@ -11,6 +11,7 @@ enum type {player, bandit, soldier, civilian};
 enum animation {
 	none,
 	walkLeft, walkRight, turn,
+	walkLeftStill, walkRightStill,
 	jump, crouch, fall,
 	swing
 };
@@ -51,13 +52,16 @@ public:
 	bool animate();
 
 	void attack();
-	
+
 	void rightWalk();
+	void rightWalkStill();
 	void turnRight();
-	
+
 	void leftWalk();
+	void leftWalkStill();
 	void turnLeft();
 
+	void createTexture(SDL_Renderer* renderer);
 
 	//getters
 	facing getDirection();

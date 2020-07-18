@@ -16,8 +16,22 @@ int main(int argc, char* args[]) {
 	vector<character> actors;
 
 	character player("austen", player);
-	player.moveTo(120, 600);
+	player.moveTo(300, 600);
 	actors.push_back(player);
+
+	sprite box1(350, 700, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+	sprite box2(400, 500, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+	sprite box3(450, 600, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+	sprite box4(250, 700, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+	sprite box5(200, 500, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+	sprite box6(150, 600, 32, 50, true, "Sprites/blu.bmp", 0, 0);
+
+	platforms.push_back(box1);
+	platforms.push_back(box2);
+	platforms.push_back(box3);
+	platforms.push_back(box4);
+	platforms.push_back(box5);
+	platforms.push_back(box6);
 
 	bool isMainMenu = true;
 	bool isQuitting = false;
@@ -52,31 +66,37 @@ int main(int argc, char* args[]) {
 
 			//check if the player is animating
 			if (actors.at(0).animate());
+
 			//if not, collect input
 			else {
 				if (inputs.isKeyPressed(SDL_SCANCODE_D) || inputs.isKeyHeld(SDL_SCANCODE_D)) {
-					actors.at(0).rightWalk();
+					if (checkCollision(actors.at(0), platforms, right)) {
+						actors.at(0).rightWalk();
+					}
+					else {
+						actors.at(0).rightWalkStill();
+					}
 				}
 				else if (inputs.isKeyPressed(SDL_SCANCODE_A) || inputs.isKeyHeld(SDL_SCANCODE_A)) {
-					actors.at(0).leftWalk();
+					if (checkCollision(actors.at(0), platforms, left)) {
+						actors.at(0).leftWalk();
+					}
+					else {
+						actors.at(0).leftWalkStill();
+					}
 				}
 
 				//TODO: add the game lol
 
 			}
 
-			//turn actors into sprite vector
-			vector<sprite> charSprites;
-			for (int i = 0; i < actors.size(); i++) {
-				charSprites.push_back(actors.at(i).getSprite());
-			}
-
 			//update all textures for sprites
-			for (int i = 0; i < charSprites.size(); i++) {
-				if (charSprites.at(i).getNeedsUpdate()) {
-					charSprites.at(i).createTexture(newWindow.getRenderer());
+			for (int i = 0; i < actors.size(); i++) {
+				if (actors.at(i).getSprite().getNeedsUpdate()) {
+					actors.at(i).createTexture(newWindow.getRenderer());
 				}
 			}
+			
 			for (int i = 0; i < platforms.size(); i++) {
 				if (platforms.at(i).getNeedsUpdate()) {
 					platforms.at(i).createTexture(newWindow.getRenderer());
@@ -87,7 +107,7 @@ int main(int argc, char* args[]) {
 			}
 
 			//draw 1 frame
-			newWindow.drawFrame(background, platforms, charSprites);
+			newWindow.drawFrame(background, platforms, actors);
 
 			//this is to ensure the game doesn't run > 60 fps, doing it this way does tie physics to fps, which isn't ideal
 			elapsedTime = SDL_GetTicks() - timeStart;

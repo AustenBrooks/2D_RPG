@@ -22,7 +22,19 @@ window::~window() {
 	SDL_DestroyWindow(win);
 }
 
-void window::drawFrame(sprite background, vector<sprite> platforms, vector<sprite> charSprites) {
+void window::drawFrame(sprite background, vector<sprite> buttons) {
+	SDL_RenderClear(renderer);
+
+	renderSprite(background);
+
+	for (int i = 0; i < buttons.size(); i++) {
+		renderSprite(buttons.at(i));
+	}
+
+	SDL_RenderPresent(renderer);
+}
+
+void window::drawFrame(sprite background, vector<sprite> platforms, vector<character> actors) {
 	SDL_RenderClear(renderer);
 
 	renderSprite(background);
@@ -31,10 +43,10 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<sprit
 		renderSprite(platforms.at(i));
 	}
 
-	for (int i = 0; i < charSprites.size(); i++) {
-		renderSprite(charSprites.at(i));
+	for (int i = 0; i < actors.size(); i++) {
+		renderSprite(actors.at(i).getSprite());
 	}
-	
+
 	SDL_RenderPresent(renderer);
 }
 

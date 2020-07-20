@@ -11,9 +11,9 @@ Todo:
 
 	//Add animation framework,
 
-	create all basic animations (walk, jump, etc)
+	//create all basic animations (walk, jump, etc)
 
-	Add objects/collision
+	//Add objects/collision
 
 	Add stats+skills
 
@@ -21,6 +21,8 @@ Todo:
 
 	add character progression
 
+	move the world when the character is in the center
+	
 	add dialouge
 
 	make a tutorial level
@@ -37,6 +39,8 @@ but if am feeling particularly inspired, will potentially do:
 	add story
 
 	use actual art for animations
+	
+	randomly generated dungeons?
 
 
 tldr;

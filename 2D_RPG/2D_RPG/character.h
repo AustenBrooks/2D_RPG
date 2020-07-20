@@ -10,15 +10,15 @@ enum type {player, bandit, soldier, civilian};
 
 enum animation {
 	none,
-	walkLeft, walkRight, turn,
-	walkLeftStill, walkRightStill,
-	jump, crouch, fall,
-	swing
+	walkingLeft, walkingRight,
+	walkingLeftStill, walkingRightStill,
+	turning,
+	crouching, jumping, falling
 };
 
 enum facing {up, down, left, right};
 
-class character : sprite{
+class character {
 private:
 	sprite charSprite;
 
@@ -39,6 +39,7 @@ private:
 	string name;
 
 	int animationFrame = 0;
+	int jumpFrame = 0;
 	animation currentAnimation = none;
 	facing direction = right;
 
@@ -49,21 +50,30 @@ public:
 
 	//class functions
 	void moveTo(int xPos, int yPos);
+	void moveBy(int xPos, int yPos);
 	bool animate();
 
 	void attack();
 
-	void rightWalk();
-	void rightWalkStill();
+	void walkRight();
+	void walkRightStill();
 	void turnRight();
 
-	void leftWalk();
-	void leftWalkStill();
+	void walkLeft();
+	void walkLeftStill();
 	void turnLeft();
+
+	void crouch();
+	void jump();
+	void fall();
+	void stop();
+
+	void bonk();
 
 	void createTexture(SDL_Renderer* renderer);
 
 	//getters
+	animation getCurrentAnimation();
 	facing getDirection();
 	sprite getSprite();
 

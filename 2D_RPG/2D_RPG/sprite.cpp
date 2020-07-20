@@ -39,6 +39,20 @@ sprite::sprite(string filename) {
 	loadedSprite = IMG_Load(filepath.c_str());
 }
 
+//for creating objects/platforms
+sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename) {
+	r.x = x;
+	r.y = y;
+	r.w = w;
+	r.h = h;
+	this->hasCollision = hasCollision;
+	filepath = filename;
+	spriteX = 0;
+	spriteY = 0;
+	doesSpriteNeedUpdate = true;
+	loadedSprite = IMG_Load(filepath.c_str());
+}
+
 void sprite::createTexture(SDL_Renderer* renderer) {
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(renderer, loadedSprite);
 	this->spriteSheet = spriteSheet;

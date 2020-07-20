@@ -1,5 +1,6 @@
 #include "character.h"
 
+//constructors
 //default constructor should never be called, but is here just in case
 character::character() {
 	sprite charSprite;
@@ -32,7 +33,7 @@ character::character() {
 
 character::character(string name, type base) {
 	if (base == player) {
-		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 0, 0);
+		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 33, 0);
 		this->charSprite = charSprite;
 
 		strength = 10;
@@ -61,8 +62,13 @@ character::character(string name, type base) {
 	this->name = name;
 }
 
+//functions
 void character::moveTo(int xPos, int yPos) {
 	charSprite.moveTo(xPos, yPos);
+}
+
+void character::moveBy(int xPos, int yPos) {
+	charSprite.moveBy(xPos, yPos);
 }
 
 //returns bool to determine if player input should be ignored
@@ -70,10 +76,35 @@ bool character::animate() {
 	if (currentAnimation == none) {
 		return false;
 	}
-	if (currentAnimation == walkRight) {
+	if (currentAnimation == walkingRight) {
+		animationFrame++;
 		if (!(animationFrame % 4)) {
 			charSprite.moveBy(1, 0);
 		}
+
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(66, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(33, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(99, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(33, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(33, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == walkingRightStill) {
 		animationFrame++;
 
 		if (animationFrame <= 16) {
@@ -98,35 +129,35 @@ bool character::animate() {
 		}
 		return true;
 	}
-	if (currentAnimation == walkRightStill) {
+	if (currentAnimation == walkingLeft) {
 		animationFrame++;
-
-		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(66, 0);
-		}
-		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(33, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
-		}
-		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(99, 0);
-		}
-		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(33, 0);
-		}
-		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(33, 0);
-			animationFrame = 0;
-			currentAnimation = none;
-		}
-		return true;
-	}
-	if (currentAnimation == walkLeft) {
 		if (animationFrame % 4 == 0) {
 			charSprite.moveBy(-1, 0);
 		}
+
+		if (animationFrame <= 16) {
+			charSprite.setSpriteXY(165, 0);
+		}
+		else if (animationFrame <= 32) {
+			charSprite.setSpriteXY(132, 0);
+			if (animationFrame == 32) {
+				currentAnimation = none;
+			}
+		}
+		else if (animationFrame <= 48) {
+			charSprite.setSpriteXY(198, 0);
+		}
+		else if (animationFrame <= 64) {
+			charSprite.setSpriteXY(132, 0);
+		}
+		else if (animationFrame > 64) {
+			charSprite.setSpriteXY(132, 0);
+			animationFrame = 0;
+			currentAnimation = none;
+		}
+		return true;
+	}
+	if (currentAnimation == walkingLeftStill) {
 		animationFrame++;
 
 		if (animationFrame <= 16) {
@@ -151,35 +182,7 @@ bool character::animate() {
 		}
 		return true;
 	}
-	if (currentAnimation == walkLeftStill) {
-		animationFrame++;
-
-		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(165, 0);
-		}
-		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(132, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
-		}
-		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(198, 0);
-		}
-		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(132, 0);
-		}
-		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(132, 0);
-			animationFrame = 0;
-			currentAnimation = none;
-		}
-		return true;
-	}
-	if (currentAnimation == turn) {
-		if (animationFrame > 16) {
-			animationFrame = 0;
-		}
+	if (currentAnimation == turning) {
 		animationFrame++;
 
 		if (animationFrame == 16) {
@@ -188,26 +191,97 @@ bool character::animate() {
 		}
 		return true;
 	}
+	if (currentAnimation == crouching) {
+		animationFrame++;
+		if (animationFrame > 32) {
+			animationFrame = 32;
+		}
+	}
+	if (currentAnimation == jumping) {
+		animationFrame++;
+
+		if (animationFrame <= jumpFrame) {
+			if (animationFrame < jumpFrame / 2) {
+				charSprite.moveBy(0, -1);
+				if (!(animationFrame % 2)) {
+					charSprite.moveBy(0, -1);
+				}
+			}
+			else if (animationFrame < 3 * jumpFrame / 4) {
+				charSprite.moveBy(0, -1);
+			}
+			else if (!(animationFrame % 2)) {
+				charSprite.moveBy(0, -1);
+			}
+
+			if (direction == right) {
+				if (!(animationFrame % 2)) {
+					charSprite.moveBy(1, 0);
+				}
+				charSprite.setSpriteXY(264, 0);
+			}
+			else if (direction == left) {
+				if (!(animationFrame % 2)) {
+					charSprite.moveBy(-1, 0);
+				}
+				charSprite.setSpriteXY(330, 0);
+			}
+		}
+		else if (animationFrame > jumpFrame) {
+			jumpFrame = 0;
+			animationFrame = 0;
+			currentAnimation = falling;
+		}
+		return true;
+	}
+	if (currentAnimation == falling) {
+		animationFrame++;
+
+		if (animationFrame < 32) {
+			if (!(animationFrame % 2)) {
+				charSprite.moveBy(0, 1);
+			}
+		}
+		else if (animationFrame < 48) {
+			charSprite.moveBy(0, 1);
+		}
+		else {
+			charSprite.moveBy(0, 1);
+			if (!(animationFrame % 2)) {
+				charSprite.moveBy(0, 1);
+			}
+		}
+
+		if (direction == right) {
+			if (!(animationFrame % 2)) {
+				charSprite.moveBy(1, 0);
+			}
+		}
+		else if (direction == left) {
+			if (!(animationFrame % 2)) {
+				charSprite.moveBy(-1, 0);
+			}
+		}
+	}
 }
 
 void character::attack() {
 	if (currentAnimation == none) {
-		currentAnimation = swing;
-		return;
+		//currentAnimation = swinging;
 	}
 }
 
-void character::rightWalk() {
+void character::walkRight() {
 	if (currentAnimation == none && direction == right) {
-		currentAnimation = walkRight;
+		currentAnimation = walkingRight;
 		return;
 	}
 	turnRight();	
 }
 
-void character::rightWalkStill() {
+void character::walkRightStill() {
 	if (currentAnimation == none && direction == right) {
-		currentAnimation = walkRightStill;
+		currentAnimation = walkingRightStill;
 		return;
 	}
 	turnRight();
@@ -217,22 +291,22 @@ void character::turnRight() {
 	if (currentAnimation == none) {
 		charSprite.setSpriteXY(33, 0);
 		direction = right;
-		currentAnimation = turn;
-		return;
+		currentAnimation = turning;
+		animationFrame = 0;
 	}
 }
 
-void character::leftWalk() {
+void character::walkLeft() {
 	if (currentAnimation == none && direction == left) {
-		currentAnimation = walkLeft;
+		currentAnimation = walkingLeft;
 		return;
 	}
 	turnLeft();
 }
 
-void character::leftWalkStill() {
+void character::walkLeftStill() {
 	if (currentAnimation == none && direction == left) {
-		currentAnimation = walkLeftStill;
+		currentAnimation = walkingLeftStill;
 		return;
 	}
 	turnLeft();
@@ -242,13 +316,62 @@ void character::turnLeft() {
 	if (currentAnimation == none) {
 		charSprite.setSpriteXY(132, 0);
 		direction = left;
-		currentAnimation = turn;
-		return;
+		currentAnimation = turning;
+		animationFrame = 0;
 	}
+}
+
+void character::crouch() {
+	if (currentAnimation == none && direction == right) {
+		charSprite.setSpriteXY(231, 0);
+		currentAnimation = crouching;
+		animationFrame = 0;
+	}
+	else if (currentAnimation == none && direction == left) {
+		charSprite.setSpriteXY(297, 0);
+		currentAnimation = crouching;
+		animationFrame = 0;
+	}
+}
+
+void character::jump() {
+	if (currentAnimation == crouching) {
+		currentAnimation = jumping;
+		jumpFrame = animationFrame * 2;
+		animationFrame = 0;
+	}
+}
+
+void character::fall() {
+	currentAnimation = falling;
+	animationFrame = 0;
+}
+
+void character::stop() {
+	currentAnimation = none;
+	animationFrame = 0;
+	if (direction == right) {
+		charSprite.setSpriteXY(33, 0);
+	}
+	else if (direction == left) {
+		charSprite.setSpriteXY(132, 0);
+	}
+	else if (direction == down) {
+		charSprite.setSpriteXY(0, 0);
+	}
+}
+
+void character::bonk() {
+	direction = down;
 }
 
 void character::createTexture(SDL_Renderer* renderer) {
 	charSprite.createTexture(renderer);
+}
+
+//getters
+animation character::getCurrentAnimation() {
+	return currentAnimation;
 }
 
 facing character::getDirection() {
@@ -259,6 +382,7 @@ sprite character::getSprite() {
 	return charSprite;
 }
 
+//setters
 void character::setCharSprite(string filename, int spriteSheetX, int spriteSheetY) {
 	charSprite.setSpriteSheet(filename, spriteSheetX, spriteSheetY);
 }

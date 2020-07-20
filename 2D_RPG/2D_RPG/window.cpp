@@ -12,10 +12,17 @@ window::window(int width, int height) {
 	windowWidth = width;
 	windowHeight = height;
 
+	//this will stretch the window to fullscreen
+	//SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN, &win, &renderer);
+	
 	SDL_CreateWindowAndRenderer(windowWidth, windowHeight, SDL_WINDOW_RESIZABLE, &win, &renderer);
 	SDL_SetWindowTitle(win, "RPG");
+	
+	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 
-	SDL_RenderSetLogicalSize(renderer, width, height);
+	//integerscale will stop artifacting from resizable windows,
+	//makes resize letterbox unless the render size and window size are perfectly scalable
+	//SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
 }
 
 window::~window() {
@@ -43,9 +50,10 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<chara
 		renderSprite(platforms.at(i));
 	}
 
-	for (int i = 0; i < actors.size(); i++) {
+	for (int i = 1; i < actors.size(); i++) {
 		renderSprite(actors.at(i).getSprite());
 	}
+	renderSprite(actors.at(0).getSprite());
 
 	SDL_RenderPresent(renderer);
 }

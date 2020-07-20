@@ -1,5 +1,6 @@
 #include "game.h"
 
+
 bool mainMenu(window& newWindow, input inputs) {
 
 	SDL_Event events;
@@ -94,25 +95,18 @@ bool mainMenu(window& newWindow, input inputs) {
 }
 
 
-bool checkCollision(character player, vector<sprite> objects, facing direction) {
-	int playerX = player.getSprite().getRectangle().x;
-	int playerY = player.getSprite().getRectangle().y;
-	int playerW = player.getSprite().getRectangle().w;
-	int playerH = player.getSprite().getRectangle().h;
-	
+bool checkCollision(character& player, vector<sprite> objects, facing direction) {
 	int playerLeft = player.getSprite().getRectangle().x;
 	int playerRight = player.getSprite().getRectangle().x + player.getSprite().getRectangle().w;
 	int playerTop = player.getSprite().getRectangle().y;
 	int playerBottom = player.getSprite().getRectangle().y + player.getSprite().getRectangle().h;
 
-	/*
-	int farLeft = objects.at(i).getRectangle().x;
-	int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
-	int top = objects.at(i).getRectangle().y;
-	int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
-	*/
+	int walkDistance = 8;
+	int maxFall = 2;
+	int maxJump = 2;
+	int maxSideMovement = 1;
 
-	int walkDistance = 16;
+	facing momentum = player.getDirection();
 
 	if (direction == right) {
 		for (int i = 0; i < objects.size(); i++) {
@@ -123,9 +117,9 @@ bool checkCollision(character player, vector<sprite> objects, facing direction) 
 				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
 
 				//if the object is to the right of player and to the left of where the player will be, check y pos
-				if ((playerRight) < farLeft && (playerRight + walkDistance) > farLeft) {
+				if (playerRight <= farLeft && (playerRight + walkDistance) >= farLeft) {
 					//if the object is not (above the player or below the players feet) return false
-					if (!((playerTop > bottom) || (playerBottom < top))) {
+					if (!(playerTop > bottom || playerBottom <= top)) {
 						return false;
 					}
 				}
@@ -142,9 +136,9 @@ bool checkCollision(character player, vector<sprite> objects, facing direction) 
 				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
 
 				//if the object is to the left of player and to the right of where the player will be, check y pos
-				if ((playerLeft > farRight) && ((playerLeft - walkDistance) < (farRight))) {
+				if (playerLeft > farRight && (playerLeft - walkDistance) <= farRight) {
 					//if the object is not (above the player or below the players feet) return false
-					if (!((playerTop > bottom) || (playerBottom < top))) {
+					if (!(playerTop > bottom || playerBottom <= top)) {
 						return false;
 					}
 				}
@@ -153,10 +147,121 @@ bool checkCollision(character player, vector<sprite> objects, facing direction) 
 		return true;
 	}
 	if (direction == up) {
+		for (int i = 0; i < objects.size(); i++) {
+			//if object has collision check its position
+			if (objects.at(i).getCollision()) {
+				int farLeft = objects.at(i).getRectangle().x;
+				int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
+				int top = objects.at(i).getRectangle().y;
+				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
 
+				//if the bottom of the object is above the player and below where they will be, check xpos
+				if (playerTop > bottom && (playerTop - maxJump) < bottom) {
+					//if the object is not to the right of the player
+					if (!(playerRight < farRight && playerRight < farLeft)) {
+						//if the object is not to the left of the player
+						if (!(playerLeft > farRight && playerLeft > farLeft)) {
+							return false;
+						}
+					}
+				}
+				if (momentum == right) {
+					//if the object is to the right of player and to the left of where the player will be, check y pos
+					if (playerRight <= farLeft && (playerRight + maxSideMovement) >= farLeft) {
+						//if the object is not (above the player or below the players feet) return false
+						if (!(playerTop > bottom || playerBottom < top)) {
+							player.bonk();
+							return false;
+						}
+					}
+				}
+				else if (momentum == left) {
+					//if the object is to the left of player and to the right of where the player will be, check y pos
+					if (playerLeft > farRight && (playerLeft - maxSideMovement) <= farRight) {
+						//if the object is not (above the player or below the players feet) return false
+						if (!(playerTop > bottom || playerBottom < top)) {
+							player.bonk();
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	if (direction == down) {
+		for (int i = 0; i < objects.size(); i++) {
+			//if object has collision check its position
+			if (objects.at(i).getCollision()) {
+				int farLeft = objects.at(i).getRectangle().x;
+				int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
+				int top = objects.at(i).getRectangle().y;
+				int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
 
+				//if the top of the object is below the player and above where they will be, check xpos
+				if (playerBottom <= top && (playerBottom + maxFall) > top) {
+					//if the object is not to the right of the player
+					if (!(playerRight < farRight && playerRight < farLeft)) {
+						//if the object is not to the left of the player
+						if (!(playerLeft > farRight && playerLeft > farLeft)) {
+							int difference = top - playerBottom;
+							player.moveBy(0, difference);
+							return false;
+
+						}
+					}
+				}
+				if (momentum == right) {
+					//if the object is to the right of player and to the left of where the player will be, check y pos
+					if (playerRight <= farLeft && (playerRight + maxSideMovement) >= farLeft) {
+						//if the object is not (above the player or below the players feet) return false
+						if (!(playerTop > bottom || playerBottom < top)) {
+							player.bonk();
+							return true;
+						}
+					}
+				}
+				else if (momentum == left) {
+					//if the object is to the left of player and to the right of where the player will be, check y pos
+					if (playerLeft > farRight && (playerLeft - maxSideMovement) <= farRight) {
+						//if the object is not (above the player or below the players feet) return false
+						if (!(playerTop > bottom || playerBottom < top)) {
+							player.bonk();
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
+}
 
+bool isGrounded(character& player, vector<sprite> objects) {
+	int playerLeft = player.getSprite().getRectangle().x;
+	int playerRight = player.getSprite().getRectangle().x + player.getSprite().getRectangle().w;
+	int playerTop = player.getSprite().getRectangle().y;
+	int playerBottom = player.getSprite().getRectangle().y + player.getSprite().getRectangle().h;
+
+	for (int i = 0; i < objects.size(); i++) {
+		//if object has collision check its position
+		if (objects.at(i).getCollision()) {
+			int farLeft = objects.at(i).getRectangle().x;
+			int farRight = objects.at(i).getRectangle().x + objects.at(i).getRectangle().w;
+			int top = objects.at(i).getRectangle().y;
+			int bottom = objects.at(i).getRectangle().y + objects.at(i).getRectangle().h;
+
+			//if the top of the object is below the player and above where they will be, check xpos
+			if (playerBottom == top) {
+				//if the object is not to the right of the player
+				if (!(playerRight < farRight && playerRight < farLeft)) {
+					//if the object is not to the left of the player
+					if (!(playerLeft > farRight && playerLeft > farLeft)) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
 }

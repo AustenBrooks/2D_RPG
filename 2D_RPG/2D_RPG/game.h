@@ -6,10 +6,11 @@
 #include "window.h"
 #include "sprite.h"
 #include "character.h"
+#include "keybinds.h"
 
 bool mainMenu(window& newWindow, input inputs);
 
-bool checkCollision(character& player, vector<sprite> objects, facing direction);
+bool willCollide(character& player, vector<sprite> objects, facing direction);
 
 bool isGrounded(character& player, vector<sprite> objects);
 

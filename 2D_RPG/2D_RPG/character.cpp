@@ -72,13 +72,13 @@ void character::moveBy(int xPos, int yPos) {
 }
 
 //returns bool to determine if player input should be ignored
-bool character::animate() {
+void character::animate() {
 	if (currentAnimation == none) {
-		return false;
+		return;
 	}
 	if (currentAnimation == walkingRight) {
 		animationFrame++;
-		if (!(animationFrame % 4)) {
+		if (!(animationFrame % 3)) {
 			charSprite.moveBy(1, 0);
 		}
 
@@ -87,9 +87,6 @@ bool character::animate() {
 		}
 		else if (animationFrame <= 32) {
 			charSprite.setSpriteXY(33, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
 		}
 		else if (animationFrame <= 48) {
 			charSprite.setSpriteXY(99, 0);
@@ -102,7 +99,7 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = none;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == walkingRightStill) {
 		animationFrame++;
@@ -127,11 +124,11 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = none;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == walkingLeft) {
 		animationFrame++;
-		if (animationFrame % 4 == 0) {
+		if (!(animationFrame % 3)) {
 			charSprite.moveBy(-1, 0);
 		}
 
@@ -155,7 +152,7 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = none;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == walkingLeftStill) {
 		animationFrame++;
@@ -180,7 +177,7 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = none;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == turning) {
 		animationFrame++;
@@ -189,23 +186,21 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = none;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == crouching) {
 		animationFrame++;
-		if (animationFrame > 32) {
-			animationFrame = 32;
+		if (animationFrame > 24) {
+			animationFrame = 24;
 		}
+		return;
 	}
 	if (currentAnimation == jumping) {
 		animationFrame++;
 
 		if (animationFrame <= jumpFrame) {
 			if (animationFrame < jumpFrame / 2) {
-				charSprite.moveBy(0, -1);
-				if (!(animationFrame % 2)) {
-					charSprite.moveBy(0, -1);
-				}
+				charSprite.moveBy(0, -2);
 			}
 			else if (animationFrame < 3 * jumpFrame / 4) {
 				charSprite.moveBy(0, -1);
@@ -232,24 +227,21 @@ bool character::animate() {
 			animationFrame = 0;
 			currentAnimation = falling;
 		}
-		return true;
+		return;
 	}
 	if (currentAnimation == falling) {
 		animationFrame++;
 
-		if (animationFrame < 32) {
+		if (animationFrame < 12) {
 			if (!(animationFrame % 2)) {
 				charSprite.moveBy(0, 1);
 			}
 		}
-		else if (animationFrame < 48) {
+		else if (animationFrame < 24) {
 			charSprite.moveBy(0, 1);
 		}
 		else {
-			charSprite.moveBy(0, 1);
-			if (!(animationFrame % 2)) {
-				charSprite.moveBy(0, 1);
-			}
+			charSprite.moveBy(0, 2);
 		}
 
 		if (direction == right) {
@@ -262,6 +254,7 @@ bool character::animate() {
 				charSprite.moveBy(-1, 0);
 			}
 		}
+		return;
 	}
 }
 
@@ -322,12 +315,12 @@ void character::turnLeft() {
 }
 
 void character::crouch() {
-	if (currentAnimation == none && direction == right) {
+	if ((currentAnimation == none || currentAnimation == walkingRight || currentAnimation == walkingRightStill) && direction == right) {
 		charSprite.setSpriteXY(231, 0);
 		currentAnimation = crouching;
 		animationFrame = 0;
 	}
-	else if (currentAnimation == none && direction == left) {
+	else if ((currentAnimation == none || currentAnimation == walkingLeft || currentAnimation == walkingLeftStill) && direction == left) {
 		charSprite.setSpriteXY(297, 0);
 		currentAnimation = crouching;
 		animationFrame = 0;

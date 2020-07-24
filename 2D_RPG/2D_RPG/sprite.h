@@ -27,6 +27,7 @@ public:
 	sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
 	sprite(string filename);
 	sprite(int x, int y, int w, int h, bool hasCollision, string filename);
+	sprite(int w, int h, bool hasCollision, string filename);
 
 	//functions
 	void createTexture(SDL_Renderer* renderer);

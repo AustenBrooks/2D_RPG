@@ -51,7 +51,7 @@ public:
 	//class functions
 	void moveTo(int xPos, int yPos);
 	void moveBy(int xPos, int yPos);
-	bool animate();
+	void animate();
 
 	void attack();
 

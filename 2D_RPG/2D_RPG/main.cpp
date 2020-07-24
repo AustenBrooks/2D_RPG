@@ -20,29 +20,36 @@ int main(int argc, char* args[]) {
 	player.moveTo(175, 550);
 	actors.push_back(player);
 
-	sprite box1(500, 550, 15, 10, true, "Sprites/blu.bmp");
-	sprite box2(400, 620, 32, 50, true, "Sprites/blu.bmp");
-	sprite box3(450, 600, 32, 50, true, "Sprites/blu.bmp");
-	sprite box4(400, 530, 10, 10, true, "Sprites/blu.bmp");
-	sprite box5(200, 500, 32, 50, true, "Sprites/blu.bmp");
-	sprite box6(150, 600, 32, 50, true, "Sprites/blu.bmp");
+	sprite bottom(0, 720, 1280, 1, true, "Sprites/blu.bmp");
 
-	sprite box7(200, 500, 150, 20, true, "Sprites/blu.bmp");
-	sprite box8(200, 630, 175, 50, true, "Sprites/blu.bmp");
+	sprite floor(410, 32, true, "Sprites/blu.bmp");
+	floor.moveTo(160, 640);
 
-	platforms.push_back(box1);
-	platforms.push_back(box2);
-	platforms.push_back(box3);
-	platforms.push_back(box4);
-	//platforms.push_back(box5);
-	platforms.push_back(box6);
-	platforms.push_back(box7);
-	platforms.push_back(box8);
+	sprite ceiling(224, 32, true, "Sprites/blu.bmp");
+	ceiling.moveTo(160, 448);
+
+	sprite box(32, 4, true, "Sprites/blu.bmp");
+
+	platforms.push_back(bottom);
+	platforms.push_back(floor);
+	platforms.push_back(ceiling);
+
+	for (int i = 0; i < 6; i++) {
+		platforms.push_back(box);
+	}
+
+	platforms.at(3).moveTo(400, 608);
+	platforms.at(4).moveTo(448, 592);
+	platforms.at(5).moveTo(516, 532);
+	platforms.at(6).moveTo(432, 480);
+	platforms.at(7).moveTo(400, 432);
+
+	platforms.at(8).moveTo(120, 624);
 
 	bool isMainMenu = true;
 	bool isQuitting = false;
 
-	while (1) {	
+	while (1) {
 		if (isMainMenu) {
 			isQuitting = mainMenu(newWindow, inputs);
 			isMainMenu = false;
@@ -51,7 +58,7 @@ int main(int argc, char* args[]) {
 		if (isQuitting) {
 			return 0;
 		}
-		
+
 		int timeStart = SDL_GetTicks();
 		int elapsedTime = SDL_GetTicks() - timeStart;
 
@@ -69,47 +76,58 @@ int main(int argc, char* args[]) {
 				return 0;
 			}
 
-			
-			if (actors.at(0).getCurrentAnimation() == jumping) {
-				if (!checkCollision(actors.at(0), platforms, up)) {
-					actors.at(0).fall();
-				}
-			}
-			else if (!isGrounded(actors.at(0), platforms) && actors.at(0).getCurrentAnimation() != falling) {
+			//if your not grounded and not already jumping/falling, then fall
+			if (!isGrounded(actors.at(0), platforms) && actors.at(0).getCurrentAnimation() != falling && actors.at(0).getCurrentAnimation() != jumping) {
 				actors.at(0).fall();
-			}
-			if (actors.at(0).getCurrentAnimation() == falling) {
-				if (!checkCollision(actors.at(0), platforms, down)) {
-					actors.at(0).stop();
-				}
 			}
 
 			//check if the player is animating
-			if (actors.at(0).animate()) {
+			if (actors.at(0).getCurrentAnimation() != none) {
+				if (actors.at(0).getCurrentAnimation() == crouching) {
+					if (inputs.isKeyReleased(KEY_JUMP)) {
+						actors.at(0).jump();
+					}
+				}
+				else if (actors.at(0).getCurrentAnimation() == jumping) {
+					if (willCollide(actors.at(0), platforms, up)) {
+						actors.at(0).fall();
+					}
+				}
+				if (actors.at(0).getCurrentAnimation() == falling) {
+					if (willCollide(actors.at(0), platforms, down)) {
+						actors.at(0).stop();
+					}
+				}
+				else if (actors.at(0).getCurrentAnimation() == walkingRight) {
+					if (inputs.isKeyReleased(KEY_RIGHT)) {
+						actors.at(0).stop();
+					}
+					else if (willCollide(actors.at(0), platforms, right)) {
+						actors.at(0).stop();
+						actors.at(0).walkRightStill();
+					}
+				}
+				else if (actors.at(0).getCurrentAnimation() == walkingLeft) {
+					if (inputs.isKeyReleased(KEY_LEFT)) {
+						actors.at(0).stop();
+					}
+					else if (willCollide(actors.at(0), platforms, left)) {
+						actors.at(0).stop();
+						actors.at(0).walkLeftStill();
+					}
+				}
+				actors.at(0).animate();
 			}
 
 			//collect input
-			if (inputs.isKeyPressed(SDL_SCANCODE_W) || inputs.isKeyHeld(SDL_SCANCODE_W)) {
+			if (inputs.isKeyPressed(KEY_JUMP) || inputs.isKeyHeld(KEY_JUMP)) {
 				actors.at(0).crouch();
 			}
-			if (inputs.isKeyReleased(SDL_SCANCODE_W)) {
-				actors.at(0).jump();
+			if (inputs.isKeyPressed(KEY_RIGHT) || inputs.isKeyHeld(KEY_RIGHT)) {
+				actors.at(0).walkRight();
 			}
-			if (inputs.isKeyPressed(SDL_SCANCODE_D) || inputs.isKeyHeld(SDL_SCANCODE_D)) {
-				if (checkCollision(actors.at(0), platforms, right)) {
-					actors.at(0).walkRight();
-				}
-				else {
-					actors.at(0).walkRightStill();
-				}
-			}
-			else if (inputs.isKeyPressed(SDL_SCANCODE_A) || inputs.isKeyHeld(SDL_SCANCODE_A)) {
-				if (checkCollision(actors.at(0), platforms, left)) {
-					actors.at(0).walkLeft();
-				}
-				else {
-					actors.at(0).walkLeftStill();
-				}
+			else if (inputs.isKeyPressed(KEY_LEFT) || inputs.isKeyHeld(KEY_LEFT)) {
+				actors.at(0).walkLeft();
 			}
 
 			//TODO: add the game lol

@@ -53,6 +53,19 @@ sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename) {
 	loadedSprite = IMG_Load(filepath.c_str());
 }
 
+sprite::sprite(int w, int h, bool hasCollision, string filename) {
+	r.x = 0;
+	r.y = 0;
+	r.w = w;
+	r.h = h;
+	this->hasCollision = hasCollision;
+	filepath = filename;
+	spriteX = 0;
+	spriteY = 0;
+	doesSpriteNeedUpdate = true;
+	loadedSprite = IMG_Load(filepath.c_str());
+}
+
 void sprite::createTexture(SDL_Renderer* renderer) {
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(renderer, loadedSprite);
 	this->spriteSheet = spriteSheet;
@@ -72,6 +85,12 @@ void sprite::moveBy(int x, int y) {
 	}
 	if (r.y < 0) {
 		r.y = 0;
+	}
+	if (r.x > (1280 - r.w)) {
+		r.x = (1280 - r.w);
+	}
+	if (r.y > (720 - r.h)) {
+		r.y = (720 - r.h);
 	}
 }
 

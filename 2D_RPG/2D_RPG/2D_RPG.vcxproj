@@ -160,6 +160,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="keybinds.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>

@@ -48,6 +48,7 @@ public:
 	void setSpriteSheet(string filepath);
 	void setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY);
 	void setSpriteXY(int spriteSheetX, int spriteSheetY);
+	void setAnimFrame(int numFrames);
 };
 
 #endif

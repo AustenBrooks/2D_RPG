@@ -154,3 +154,7 @@ void sprite::setSpriteXY(int spriteSheetX, int spriteSheetY) {
 	spriteX = spriteSheetX;
 	spriteY = spriteSheetY;
 }
+
+void sprite::setAnimFrame(int numFrames) {
+	spriteX = numFrames * (r.w + 1);
+}

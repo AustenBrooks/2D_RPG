@@ -83,19 +83,19 @@ void character::animate() {
 		}
 
 		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(66, 0);
+			charSprite.setAnimFrame(2);
 		}
 		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(33, 0);
+			charSprite.setAnimFrame(1);
 		}
 		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(99, 0);
+			charSprite.setAnimFrame(3);
 		}
 		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(33, 0);
+			charSprite.setAnimFrame(1);
 		}
 		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(33, 0);
+			charSprite.setAnimFrame(1);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
@@ -105,22 +105,19 @@ void character::animate() {
 		animationFrame++;
 
 		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(66, 0);
+			charSprite.setAnimFrame(2);
 		}
 		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(33, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
+			charSprite.setAnimFrame(1);
 		}
 		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(99, 0);
+			charSprite.setAnimFrame(3);
 		}
 		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(33, 0);
+			charSprite.setAnimFrame(1);
 		}
 		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(33, 0);
+			charSprite.setAnimFrame(1);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
@@ -133,22 +130,19 @@ void character::animate() {
 		}
 
 		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(165, 0);
+			charSprite.setAnimFrame(5);
 		}
 		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(132, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
+			charSprite.setAnimFrame(4);
 		}
 		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(198, 0);
+			charSprite.setAnimFrame(6);
 		}
 		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(132, 0);
+			charSprite.setAnimFrame(4);
 		}
 		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(132, 0);
+			charSprite.setAnimFrame(4);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
@@ -158,22 +152,19 @@ void character::animate() {
 		animationFrame++;
 
 		if (animationFrame <= 16) {
-			charSprite.setSpriteXY(165, 0);
+			charSprite.setAnimFrame(5);
 		}
 		else if (animationFrame <= 32) {
-			charSprite.setSpriteXY(132, 0);
-			if (animationFrame == 32) {
-				currentAnimation = none;
-			}
+			charSprite.setAnimFrame(4);
 		}
 		else if (animationFrame <= 48) {
-			charSprite.setSpriteXY(198, 0);
+			charSprite.setAnimFrame(6);
 		}
 		else if (animationFrame <= 64) {
-			charSprite.setSpriteXY(132, 0);
+			charSprite.setAnimFrame(4);
 		}
 		else if (animationFrame > 64) {
-			charSprite.setSpriteXY(132, 0);
+			charSprite.setAnimFrame(4);
 			animationFrame = 0;
 			currentAnimation = none;
 		}
@@ -213,13 +204,13 @@ void character::animate() {
 				if (!(animationFrame % 2)) {
 					charSprite.moveBy(1, 0);
 				}
-				charSprite.setSpriteXY(264, 0);
+				charSprite.setAnimFrame(8);
 			}
 			else if (direction == left) {
 				if (!(animationFrame % 2)) {
 					charSprite.moveBy(-1, 0);
 				}
-				charSprite.setSpriteXY(330, 0);
+				charSprite.setAnimFrame(10);
 			}
 		}
 		else if (animationFrame > jumpFrame) {
@@ -282,7 +273,7 @@ void character::walkRightStill() {
 
 void character::turnRight() {
 	if (currentAnimation == none) {
-		charSprite.setSpriteXY(33, 0);
+		charSprite.setAnimFrame(1);
 		direction = right;
 		currentAnimation = turning;
 		animationFrame = 0;
@@ -307,7 +298,7 @@ void character::walkLeftStill() {
 
 void character::turnLeft() {
 	if (currentAnimation == none) {
-		charSprite.setSpriteXY(132, 0);
+		charSprite.setAnimFrame(4);
 		direction = left;
 		currentAnimation = turning;
 		animationFrame = 0;
@@ -316,12 +307,12 @@ void character::turnLeft() {
 
 void character::crouch() {
 	if ((currentAnimation == none || currentAnimation == walkingRight || currentAnimation == walkingRightStill) && direction == right) {
-		charSprite.setSpriteXY(231, 0);
+		charSprite.setAnimFrame(7);
 		currentAnimation = crouching;
 		animationFrame = 0;
 	}
 	else if ((currentAnimation == none || currentAnimation == walkingLeft || currentAnimation == walkingLeftStill) && direction == left) {
-		charSprite.setSpriteXY(297, 0);
+		charSprite.setAnimFrame(9);
 		currentAnimation = crouching;
 		animationFrame = 0;
 	}
@@ -344,13 +335,13 @@ void character::stop() {
 	currentAnimation = none;
 	animationFrame = 0;
 	if (direction == right) {
-		charSprite.setSpriteXY(33, 0);
+		charSprite.setAnimFrame(1);
 	}
 	else if (direction == left) {
-		charSprite.setSpriteXY(132, 0);
+		charSprite.setAnimFrame(4);
 	}
 	else if (direction == down) {
-		charSprite.setSpriteXY(0, 0);
+		charSprite.setAnimFrame(0);
 	}
 }
 

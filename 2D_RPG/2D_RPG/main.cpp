@@ -76,7 +76,7 @@ int main(int argc, char* args[]) {
 				return 0;
 			}
 
-			//if your not grounded and not already jumping/falling, then fall
+			//if you're not grounded and not already jumping/falling, then fall
 			if (!isGrounded(actors.at(0), platforms) && actors.at(0).getCurrentAnimation() != falling && actors.at(0).getCurrentAnimation() != jumping) {
 				actors.at(0).fall();
 			}

@@ -19,7 +19,6 @@ bool mainMenu(window& newWindow, input inputs) {
 		buttons.push_back(quitButton);
 
 		int timeStart = SDL_GetTicks();
-		int elapsedTime = SDL_GetTicks() - timeStart;
 
 		inputs.clearKeys();
 		SDL_PollEvent(&events);
@@ -84,7 +83,7 @@ bool mainMenu(window& newWindow, input inputs) {
 		}
 
 		//delay if over 60 FPS
-		elapsedTime = SDL_GetTicks() - timeStart;
+		int elapsedTime = SDL_GetTicks() - timeStart;
 		if (elapsedTime < FRAME_TIME) {
 			SDL_Delay(FRAME_TIME - elapsedTime);
 		}
@@ -267,4 +266,81 @@ bool isGrounded(character& player, vector<sprite> objects) {
 		}
 	}
 	return false;
+}
+
+void fight(window& newWindow, input inputs, character& player, vector<character> enemies) {
+	SDL_Event events;
+	sprite background("Sprites/forest.png");
+
+	bool isPaused = true;
+	int attackFrames = 300;
+	int frame = 0;
+	
+	enum action { none, attack, items, cast };
+	action queue = none;
+
+	while (1) {
+		frame++;
+
+		int timeStart = SDL_GetTicks();
+
+		inputs.clearKeys();
+		SDL_PollEvent(&events);
+
+		//collect input
+		if (events.type == SDL_KEYDOWN && events.key.repeat == false) {
+			inputs.pressKey(events.key.keysym.scancode);
+		}
+		if (events.type == SDL_KEYUP) {
+			inputs.releaseKey(events.key.keysym.scancode);
+		}
+		
+		if (inputs.isKeyPressed(KEY_PAUSE)) {
+			isPaused = !isPaused;
+		}
+		if (inputs.isKeyPressed(KEY_ATTACK)) {
+			queue = attack;
+		}
+		if (inputs.isKeyPressed(KEY_ITEMS)) {
+			queue = items;
+		}
+		
+		if(!isPaused) {
+			if ((frame % attackFrames) == 0) {
+				if (queue == attack) {
+					//attack
+					queue = none;
+				}
+				else if (queue == items) {
+					//items
+					queue = none;
+				}
+
+			}
+			//regen hp, stam, mag
+		}
+
+		//update all textures
+		if (player.getSprite().getNeedsUpdate()) {
+			player.createTexture(newWindow.getRenderer());
+		}
+		for (int i = 0; i < enemies.size(); i++) {
+			if (enemies.at(i).getSprite().getNeedsUpdate()) {
+				enemies.at(i).createTexture(newWindow.getRenderer());
+			}
+		}
+		if (background.getNeedsUpdate()) {
+			background.createTexture(newWindow.getRenderer());
+		}
+
+		//delay if over 60 FPS
+		int elapsedTime = SDL_GetTicks() - timeStart;
+		if (elapsedTime < FRAME_TIME) {
+			SDL_Delay(FRAME_TIME - elapsedTime);
+		}
+
+		vector<sprite> none;
+		//draw the frame
+		newWindow.drawFrame(background, none);
+	}
 }

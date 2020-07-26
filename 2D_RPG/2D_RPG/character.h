@@ -22,22 +22,22 @@ class character {
 private:
 	sprite charSprite;
 
+	//combat stats
 	int strength, endurance;
 	int dexterity, agility;
 	int wisdom, intelligence;
 
-	int level;
-	int xp;
+	int level, xp;
 
 	float health, stamina, magic;
+	float currentHealth, currentStamina, currentMagic;
 	float healthRegen, staminaRegen, magicRegen;
 
-	float damage;
-	float speed;
-	float armor;
+	float damage, speed, armor;
 
 	string name;
 
+	//sprite + animation functions
 	int animationFrame = 0;
 	int jumpFrame = 0;
 	animation currentAnimation = none;
@@ -51,9 +51,10 @@ public:
 	//class functions
 	void moveTo(int xPos, int yPos);
 	void moveBy(int xPos, int yPos);
+	void createTexture(SDL_Renderer* renderer);
+	
+	//animation functions
 	void animate();
-
-	void attack();
 
 	void walkRight();
 	void walkRightStill();
@@ -66,11 +67,15 @@ public:
 	void crouch();
 	void jump();
 	void fall();
-	void stop();
-
 	void bonk();
 
-	void createTexture(SDL_Renderer* renderer);
+	void stop();
+
+	//combat functions
+	bool isAlive();
+	void defendPhysical(float damage);
+	float attack();
+	void cast();
 
 	//getters
 	animation getCurrentAnimation();

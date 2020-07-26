@@ -50,6 +50,10 @@ character::character(string name, type base) {
 		stamina = 50;
 		magic = 50;
 
+		currentHealth = health;
+		currentStamina = stamina;
+		currentMagic = magic;
+
 		healthRegen = 1;
 		staminaRegen = 1;
 		magicRegen = 1;
@@ -71,6 +75,11 @@ void character::moveBy(int xPos, int yPos) {
 	charSprite.moveBy(xPos, yPos);
 }
 
+void character::createTexture(SDL_Renderer* renderer) {
+	charSprite.createTexture(renderer);
+}
+
+//animation functions
 //returns bool to determine if player input should be ignored
 void character::animate() {
 	if (currentAnimation == none) {
@@ -249,12 +258,6 @@ void character::animate() {
 	}
 }
 
-void character::attack() {
-	if (currentAnimation == none) {
-		//currentAnimation = swinging;
-	}
-}
-
 void character::walkRight() {
 	if (currentAnimation == none && direction == right) {
 		currentAnimation = walkingRight;
@@ -331,6 +334,10 @@ void character::fall() {
 	animationFrame = 0;
 }
 
+void character::bonk() {
+	direction = down;
+}
+
 void character::stop() {
 	currentAnimation = none;
 	animationFrame = 0;
@@ -345,12 +352,26 @@ void character::stop() {
 	}
 }
 
-void character::bonk() {
-	direction = down;
+//combat functions
+bool character::isAlive() {
+	if (currentHealth > 0) {
+		return true;
+	}
+	return false;
 }
 
-void character::createTexture(SDL_Renderer* renderer) {
-	charSprite.createTexture(renderer);
+void character::defendPhysical(float dmg) {
+	float def = armor / (float)100;
+	if (def > .85) {
+		def = .85;
+	}
+	currentHealth -= dmg * def;
+}
+
+float character::attack() {
+	float dmg = damage;
+
+	return dmg;
 }
 
 //getters

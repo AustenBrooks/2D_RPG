@@ -26,6 +26,7 @@ public:
 
 	void drawFrame(sprite background, vector<sprite> buttons);
 	void drawFrame(sprite background, vector<sprite> platforms, vector<character> actors);
+	void drawFrame(sprite background, character player, character enemy);
 	void renderSprite(sprite s);
 
 	SDL_Renderer* getRenderer();

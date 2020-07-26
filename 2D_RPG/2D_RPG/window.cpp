@@ -58,6 +58,17 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<chara
 	SDL_RenderPresent(renderer);
 }
 
+void window::drawFrame(sprite background, character player, character enemy) {
+	SDL_RenderClear(renderer);
+
+	renderSprite(background);
+
+	renderSprite(player.getSprite());
+	renderSprite(enemy.getSprite());
+
+	SDL_RenderPresent(renderer);
+}
+
 void window::renderSprite(sprite s) {
 	SDL_Rect r;
 	r.x = s.getSpriteX();

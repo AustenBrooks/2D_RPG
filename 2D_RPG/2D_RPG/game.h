@@ -8,7 +8,9 @@
 #include "character.h"
 #include "keybinds.h"
 
-#define FPS 60
+#include <iostream>
+
+#define FPS 120
 #define FRAME_TIME (float)(1000 / FPS)
 
 bool mainMenu(window& newWindow, input inputs);
@@ -17,6 +19,6 @@ bool willCollide(character& player, vector<sprite> objects, facing direction);
 
 bool isGrounded(character& player, vector<sprite> objects);
 
-void fight(window& newWindow, input inputs, character& player, vector<character> enemies);
+void fight(window& newWindow, input inputs, character& player, character enemy);
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #include <string>
+#include <iostream>
 
 using std::string;
 
@@ -34,6 +35,8 @@ private:
 	float healthRegen, staminaRegen, magicRegen;
 
 	float damage, speed, armor;
+
+	int attackFrame = 0;
 
 	string name;
 
@@ -73,9 +76,12 @@ public:
 
 	//combat functions
 	bool isAlive();
+	bool canAct();
 	void defendPhysical(float damage);
 	float attack();
 	void cast();
+	void regen();
+	void displayStats();
 
 	//getters
 	animation getCurrentAnimation();
@@ -83,7 +89,7 @@ public:
 	sprite getSprite();
 
 	//setters
-	void setCharSprite(string filename, int spriteSheetX, int spriteSheetY);
+	void setSpriteSheet(string filename, int spriteSheetX, int spriteSheetY);
 };
 
 #endif

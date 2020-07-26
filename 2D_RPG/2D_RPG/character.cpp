@@ -54,9 +54,9 @@ character::character(string name, type base) {
 		currentStamina = stamina;
 		currentMagic = magic;
 
-		healthRegen = 1;
-		staminaRegen = 1;
-		magicRegen = 1;
+		healthRegen = .01;
+		staminaRegen = .01;
+		magicRegen = .01;
 
 		damage = 5;
 		speed = 1;
@@ -80,7 +80,6 @@ void character::createTexture(SDL_Renderer* renderer) {
 }
 
 //animation functions
-//returns bool to determine if player input should be ignored
 void character::animate() {
 	if (currentAnimation == none) {
 		return;
@@ -360,18 +359,49 @@ bool character::isAlive() {
 	return false;
 }
 
+bool character::canAct() {
+	attackFrame++;
+	if (attackFrame >= 300 / speed) {
+		return true;
+	}
+	return false;
+}
+
 void character::defendPhysical(float dmg) {
 	float def = armor / (float)100;
 	if (def > .85) {
 		def = .85;
 	}
-	currentHealth -= dmg * def;
+	currentHealth -= (dmg - (dmg * def));
 }
 
 float character::attack() {
+	attackFrame = 0;
 	float dmg = damage;
-
 	return dmg;
+}
+
+
+void character::regen() {
+	currentHealth += healthRegen * health;
+	currentStamina += staminaRegen * stamina;
+	currentMagic += magicRegen * magic;
+
+	if (currentHealth > health) {
+		currentHealth = health;
+	}
+	if (currentStamina > stamina){
+		currentStamina = stamina;
+	}
+	if (currentMagic > magic) {
+		currentMagic = magic;
+	}
+}
+
+void character::displayStats() {
+	std::cout << "HP: " << currentHealth << " / " << health << std::endl;
+	std::cout << "ST: " << currentStamina << " / " << stamina << std::endl;
+	std::cout << "MP: " << currentMagic << " / " << magic << std::endl;
 }
 
 //getters
@@ -388,6 +418,6 @@ sprite character::getSprite() {
 }
 
 //setters
-void character::setCharSprite(string filename, int spriteSheetX, int spriteSheetY) {
+void character::setSpriteSheet(string filename, int spriteSheetX, int spriteSheetY) {
 	charSprite.setSpriteSheet(filename, spriteSheetX, spriteSheetY);
 }

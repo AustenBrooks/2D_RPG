@@ -82,14 +82,14 @@ bool mainMenu(window& newWindow, input inputs) {
 			background.createTexture(newWindow.getRenderer());
 		}
 
-		//delay if over 60 FPS
+		//draw the frame
+		newWindow.drawFrame(background, buttons);
+
+		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;
 		if (elapsedTime < FRAME_TIME) {
 			SDL_Delay(FRAME_TIME - elapsedTime);
 		}
-
-		//draw the frame
-		newWindow.drawFrame(background, buttons);
 	}
 }
 
@@ -268,20 +268,19 @@ bool isGrounded(character& player, vector<sprite> objects) {
 	return false;
 }
 
-void fight(window& newWindow, input inputs, character& player, vector<character> enemies) {
+void fight(window& newWindow, input inputs, character& player, character enemy) {
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
 
+	enemy.moveTo(350, 550);
 	bool isPaused = true;
-	int attackFrames = 300;
-	int frame = 0;
 	
 	enum action { none, attack, items, cast };
-	action queue = none;
+	action playerQueue = none;
+	action enemyQueue = attack;
 
-	while (1) {
-		frame++;
-
+	int frame = 0;
+	while (player.isAlive() && enemy.isAlive()) {
 		int timeStart = SDL_GetTicks();
 
 		inputs.clearKeys();
@@ -299,48 +298,61 @@ void fight(window& newWindow, input inputs, character& player, vector<character>
 			isPaused = !isPaused;
 		}
 		if (inputs.isKeyPressed(KEY_ATTACK)) {
-			queue = attack;
+			playerQueue = attack;
 		}
 		if (inputs.isKeyPressed(KEY_ITEMS)) {
-			queue = items;
+			playerQueue = items;
 		}
 		
+		//if game isnt paused, then do the fight
 		if(!isPaused) {
-			if ((frame % attackFrames) == 0) {
-				if (queue == attack) {
-					//attack
-					queue = none;
+			frame++;
+			if (player.canAct()) {
+				if (playerQueue == attack) {
+					enemy.defendPhysical(player.attack());
+					//playerQueue = none;
+					std::cout << "player attacks \n";
 				}
-				else if (queue == items) {
-					//items
-					queue = none;
+				else if (playerQueue == items) {
+					//use item
+					playerQueue = none;
 				}
-
 			}
-			//regen hp, stam, mag
+			if (enemy.canAct()) {
+				if (enemyQueue == attack) {
+					player.defendPhysical(enemy.attack());
+					//enemyQueue = none;
+					std::cout << "enemy attacks \n";
+				}
+			}
+			if (!(frame % FPS)) {
+				player.regen();
+				enemy.regen();
+				std::cout << "Player \n";
+				player.displayStats();
+				std::cout << "Enemy \n";
+				enemy.displayStats();
+			}
 		}
 
 		//update all textures
 		if (player.getSprite().getNeedsUpdate()) {
 			player.createTexture(newWindow.getRenderer());
 		}
-		for (int i = 0; i < enemies.size(); i++) {
-			if (enemies.at(i).getSprite().getNeedsUpdate()) {
-				enemies.at(i).createTexture(newWindow.getRenderer());
-			}
+		if (enemy.getSprite().getNeedsUpdate()) {
+			enemy.createTexture(newWindow.getRenderer());
 		}
 		if (background.getNeedsUpdate()) {
 			background.createTexture(newWindow.getRenderer());
 		}
+		
+		//draw the frame
+		newWindow.drawFrame(background, player, enemy);
 
-		//delay if over 60 FPS
+		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;
 		if (elapsedTime < FRAME_TIME) {
 			SDL_Delay(FRAME_TIME - elapsedTime);
 		}
-
-		vector<sprite> none;
-		//draw the frame
-		newWindow.drawFrame(background, none);
 	}
 }

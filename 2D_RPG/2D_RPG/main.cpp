@@ -50,8 +50,9 @@ int main(int argc, char* args[]) {
 	bool isQuitting = false;
 
 	fight(newWindow, inputs, actors.at(0), actors.at(0));
-	text one("123", 120, 120, 1);
-	while (0) {
+	text one("here is some sample text \nnot all will show", 120, 120, 1);
+
+	while (1) {
 		if (background.getNeedsUpdate()) {
 			background.createTexture(newWindow.getRenderer());
 		}

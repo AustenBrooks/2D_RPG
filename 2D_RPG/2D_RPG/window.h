@@ -7,6 +7,7 @@
 #include <string>
 #include "sprite.h"
 #include "character.h"
+#include "text.h"
 
 using std::vector;
 using std::string;
@@ -26,7 +27,7 @@ public:
 
 	void drawFrame(sprite background, vector<sprite> buttons);
 	void drawFrame(sprite background, vector<sprite> platforms, vector<character> actors);
-	void drawFrame(sprite background, character player, character enemy);
+	void drawFrame(sprite background, character player, character enemy, vector<sprite> letters);
 	void renderSprite(sprite s);
 
 	SDL_Renderer* getRenderer();

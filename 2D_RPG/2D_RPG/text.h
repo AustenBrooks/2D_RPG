@@ -24,6 +24,9 @@ public:
 		
 	//getter
 	vector<sprite> getLetters();	
+
+	//setter
+	void setText(string word, int xPos, int yPos, float scale);
 };
 
 #endif

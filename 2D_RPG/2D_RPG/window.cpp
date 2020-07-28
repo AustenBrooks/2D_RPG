@@ -56,13 +56,17 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<chara
 	SDL_RenderPresent(renderer);
 }
 
-void window::drawFrame(sprite background, character player, character enemy) {
+void window::drawFrame(sprite background, character player, character enemy, vector<sprite> letters) {
 	SDL_RenderClear(renderer);
 	renderSprite(background);
 
 	renderSprite(player.getSprite());
 	renderSprite(enemy.getSprite());
 
+	for (int i = 0; i < letters.size(); i++) {
+		renderSprite(letters.at(i));
+	}
+	
 	SDL_RenderPresent(renderer);
 }
 

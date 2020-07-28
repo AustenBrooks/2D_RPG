@@ -2,8 +2,9 @@
 #define CHARACTER_H
 
 #include "sprite.h"
+#include <iomanip>
+#include <sstream> 
 #include <string>
-#include <iostream>
 
 using std::string;
 
@@ -81,7 +82,7 @@ public:
 	float attack();
 	void cast();
 	void regen();
-	void displayStats();
+	string displayStats();
 
 	//getters
 	animation getCurrentAnimation();

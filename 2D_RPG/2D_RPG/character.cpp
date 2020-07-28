@@ -400,10 +400,15 @@ void character::regen() {
 	}
 }
 
-void character::displayStats() {
-	std::cout << "HP: " << currentHealth << " / " << health << std::endl;
-	std::cout << "ST: " << currentStamina << " / " << stamina << std::endl;
-	std::cout << "MP: " << currentMagic << " / " << magic << std::endl;
+string character::displayStats() {
+	std::stringstream stream;
+	stream << name << ": \n";
+	stream << "HP: " << std::fixed << std::setprecision(2) << currentHealth << " / " << std::fixed << std::setprecision(2) << health << '\n';
+	stream << "ST: " << std::fixed << std::setprecision(2) << currentStamina << " / " << std::fixed << std::setprecision(2) << stamina << '\n';
+	stream << "MP: " << std::fixed << std::setprecision(2) << currentMagic << " / " << std::fixed << std::setprecision(2) << magic << '\n';
+
+	string stats = stream.str();
+	return stats;
 }
 
 //getters

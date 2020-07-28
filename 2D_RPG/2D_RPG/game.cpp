@@ -278,7 +278,8 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 	enum action { none, attack, items, cast };
 	action playerQueue = none;
 	action enemyQueue = attack;
-
+	
+	text playerStats(player.displayStats(), 220, 500, 1);
 	int frame = 0;
 	while (player.isAlive() && enemy.isAlive()) {
 		int timeStart = SDL_GetTicks();
@@ -297,10 +298,10 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		if (inputs.isKeyPressed(KEY_PAUSE)) {
 			isPaused = !isPaused;
 		}
-		if (inputs.isKeyPressed(KEY_ATTACK)) {
+		else if (inputs.isKeyPressed(KEY_ATTACK)) {
 			playerQueue = attack;
 		}
-		if (inputs.isKeyPressed(KEY_ITEMS)) {
+		else if (inputs.isKeyPressed(KEY_ITEMS)) {
 			playerQueue = items;
 		}
 		
@@ -328,14 +329,12 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 			if (!(frame % FPS)) {
 				player.regen();
 				enemy.regen();
-				std::cout << "Player \n";
-				player.displayStats();
-				std::cout << "Enemy \n";
-				enemy.displayStats();
 			}
+			playerStats.setText(player.displayStats(), 220, 500, 1);
 		}
 
 		//update all textures
+		playerStats.createTextures(newWindow.getRenderer());
 		if (player.getSprite().getNeedsUpdate()) {
 			player.createTexture(newWindow.getRenderer());
 		}
@@ -347,7 +346,7 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		}
 		
 		//draw the frame
-		newWindow.drawFrame(background, player, enemy);
+		newWindow.drawFrame(background, player, enemy , playerStats.getLetters());
 
 		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;

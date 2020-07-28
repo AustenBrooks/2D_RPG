@@ -154,6 +154,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="character.h" />
     <ClInclude Include="keybinds.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +177,7 @@
     <Image Include="Sprites\quitSelected.png" />
     <Image Include="Sprites\settings.png" />
     <Image Include="Sprites\settingsSelected.png" />
+    <Image Include="Sprites\text.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

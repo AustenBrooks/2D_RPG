@@ -4,6 +4,7 @@
 #include "game.h"
 #include "sprite.h"
 #include "character.h"
+#include "text.h"
 
 int main(int argc, char* args[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -49,6 +50,14 @@ int main(int argc, char* args[]) {
 	bool isQuitting = false;
 
 	fight(newWindow, inputs, actors.at(0), actors.at(0));
+	text one("123", 120, 120, 1);
+	while (0) {
+		if (background.getNeedsUpdate()) {
+			background.createTexture(newWindow.getRenderer());
+		}
+		one.createTextures(newWindow.getRenderer());
+		newWindow.drawFrame(background, one.getLetters());
+	}
 
 	while (1) {
 		if (isMainMenu) {

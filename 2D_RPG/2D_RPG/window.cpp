@@ -31,7 +31,6 @@ window::~window() {
 
 void window::drawFrame(sprite background, vector<sprite> buttons) {
 	SDL_RenderClear(renderer);
-
 	renderSprite(background);
 
 	for (int i = 0; i < buttons.size(); i++) {
@@ -43,7 +42,6 @@ void window::drawFrame(sprite background, vector<sprite> buttons) {
 
 void window::drawFrame(sprite background, vector<sprite> platforms, vector<character> actors) {
 	SDL_RenderClear(renderer);
-
 	renderSprite(background);
 
 	for (int i = 0; i < platforms.size(); i++) {
@@ -60,7 +58,6 @@ void window::drawFrame(sprite background, vector<sprite> platforms, vector<chara
 
 void window::drawFrame(sprite background, character player, character enemy) {
 	SDL_RenderClear(renderer);
-
 	renderSprite(background);
 
 	renderSprite(player.getSprite());
@@ -76,7 +73,13 @@ void window::renderSprite(sprite s) {
 	r.w = s.getRectangle().w;
 	r.h = s.getRectangle().h;
 
-	SDL_RenderCopy(renderer, s.getSpriteSheet(), &r, &s.getRectangle());
+
+	SDL_Rect l;
+	l = s.getRectangle();
+	l.w = r.w * s.getScale();
+	l.h = r.h * s.getScale();
+
+	SDL_RenderCopy(renderer, s.getSpriteSheet(), &r, &l);
 }
 
 SDL_Renderer* window::getRenderer() {

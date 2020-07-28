@@ -12,6 +12,7 @@ private:
 	SDL_Rect r;
 	int spriteX;
 	int spriteY;
+	float scale = 1;
 	bool hasCollision;
 
 	string filepath;
@@ -24,7 +25,7 @@ private:
 public:
 	//constructors
 	sprite();
-	sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
+	sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY, float scale);
 	sprite(string filename);
 	sprite(int x, int y, int w, int h, bool hasCollision, string filename);
 	sprite(int w, int h, bool hasCollision, string filename);
@@ -40,11 +41,12 @@ public:
 	string getFilePath();
 	int getSpriteX();
 	int getSpriteY();
+	float getScale();
 	SDL_Texture* getSpriteSheet();
 	bool getNeedsUpdate();
 
 	//setters
-	void setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY);
+	void setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY, float scale);
 	void setSpriteSheet(string filepath);
 	void setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY);
 	void setSpriteXY(int spriteSheetX, int spriteSheetY);

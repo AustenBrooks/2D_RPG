@@ -12,7 +12,7 @@ sprite::sprite() {
 	doesSpriteNeedUpdate = true;
 }
 
-sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY) {
+sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY, float scale) {
 	r.x = x;
 	r.y = y;
 	r.w = w;
@@ -21,6 +21,7 @@ sprite::sprite(int x, int y, int w, int h, bool hasCollision, string filename, i
 	filepath = filename;
 	spriteX = spriteSheetX;
 	spriteY = spriteSheetY;
+	this->scale = scale;
 	doesSpriteNeedUpdate = true;
 	loadedSprite = IMG_Load(filepath.c_str());
 }
@@ -114,6 +115,10 @@ int sprite::getSpriteY() {
 	return spriteY;
 }
 
+float sprite::getScale() {
+	return scale;
+}
+
 SDL_Texture* sprite::getSpriteSheet() {
 	return spriteSheet;
 }
@@ -122,7 +127,7 @@ bool sprite::getNeedsUpdate() {
 	return doesSpriteNeedUpdate;
 }
 
-void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY) {
+void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string filename, int spriteSheetX, int spriteSheetY, float scale) {
 	r.x = x;
 	r.y = y;
 	r.w = w;
@@ -131,6 +136,7 @@ void sprite::setSprite(int x, int y, int w, int h, bool hasCollision, string fil
 	filepath = filename;
 	spriteX = spriteSheetX;
 	spriteY = spriteSheetY;
+	this->scale = scale;
 	doesSpriteNeedUpdate = true;
 	loadedSprite = IMG_Load(filepath.c_str());
 }

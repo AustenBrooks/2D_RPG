@@ -33,7 +33,7 @@ character::character() {
 
 character::character(string name, type base) {
 	if (base == player) {
-		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 33, 0);
+		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 33, 0, 1);
 		this->charSprite = charSprite;
 
 		strength = 10;
@@ -362,6 +362,7 @@ bool character::isAlive() {
 bool character::canAct() {
 	attackFrame++;
 	if (attackFrame >= 300 / speed) {
+		attackFrame = 300 / speed;
 		return true;
 	}
 	return false;
@@ -377,7 +378,8 @@ void character::defendPhysical(float dmg) {
 
 float character::attack() {
 	attackFrame = 0;
-	float dmg = damage;
+	float stamBoost = (float)currentStamina / (float)stamina;
+	float dmg = damage * stamBoost;
 	return dmg;
 }
 

@@ -11,9 +11,9 @@ bool mainMenu(window& newWindow, input inputs) {
 
 	while (1) {
 		vector<sprite> buttons;
-		sprite playButton(1000, 260, 200, 100, false, "Sprites/play.png", 0, 0);
-		sprite settingsButton(1000, 360, 200, 100, false, "Sprites/settings.png", 0, 0);
-		sprite quitButton(1000, 460, 200, 100, false, "Sprites/quit.png", 0, 0);
+		sprite playButton(1000, 260, 200, 100, false, "Sprites/play.png", 0, 0, 1);
+		sprite settingsButton(1000, 360, 200, 100, false, "Sprites/settings.png", 0, 0, 1);
+		sprite quitButton(1000, 460, 200, 100, false, "Sprites/quit.png", 0, 0, 1);
 		buttons.push_back(playButton);
 		buttons.push_back(settingsButton);
 		buttons.push_back(quitButton);

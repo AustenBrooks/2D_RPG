@@ -16,9 +16,13 @@ int main(int argc, char* args[]) {
 	vector<sprite> platforms;
 	vector<character> actors;
 
-	character player("austen", player);
-	player.moveTo(175, 550);
-	actors.push_back(player);
+	character austen("austen", player);
+	character enemy("enemy", player);
+	austen.moveTo(175, 550);
+	enemy.moveTo(300, 576);
+	enemy.turnLeft();
+	actors.push_back(austen);
+	actors.push_back(enemy);
 
 	sprite bottom(0, 720, 1280, 1, true, "Sprites/blu.bmp");
 
@@ -49,10 +53,10 @@ int main(int argc, char* args[]) {
 	bool isMainMenu = true;
 	bool isQuitting = false;
 
-	fight(newWindow, inputs, actors.at(0), actors.at(0));
-	text one("here is some sample text \nnot all will show", 120, 120, 1);
+	fight(newWindow, inputs, actors.at(0), actors.at(1));
+	text one("the quick brown fox jumped over the lazy dog\nTHE QUICK BROWN FOX JUMPED OVER THE LAZY DOG,./:", 120, 300, 1);
 
-	while (1) {
+	while (0) {
 		if (background.getNeedsUpdate()) {
 			background.createTexture(newWindow.getRenderer());
 		}

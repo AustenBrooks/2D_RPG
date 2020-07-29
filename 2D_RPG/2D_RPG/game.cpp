@@ -272,14 +272,16 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
 
-	enemy.moveTo(350, 550);
+	enemy.moveTo(400, 550);
 	bool isPaused = true;
 	
 	enum action { none, attack, items, cast };
 	action playerQueue = none;
 	action enemyQueue = attack;
-	
+
 	text playerStats(player.displayStats(), 220, 500, 1);
+	text enemyStats(enemy.displayStats(), 500, 500, 1);
+	text pause("PAUSED", 550, 100, 2);
 	int frame = 0;
 	while (player.isAlive() && enemy.isAlive()) {
 		int timeStart = SDL_GetTicks();
@@ -304,9 +306,10 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		else if (inputs.isKeyPressed(KEY_ITEMS)) {
 			playerQueue = items;
 		}
-		
+
 		//if game isnt paused, then do the fight
 		if(!isPaused) {
+			pause.setText("", 550, 120, 2);
 			frame++;
 			if (player.canAct()) {
 				if (playerQueue == attack) {
@@ -331,10 +334,16 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 				enemy.regen();
 			}
 			playerStats.setText(player.displayStats(), 220, 500, 1);
+			enemyStats.setText(enemy.displayStats(), 500, 500, 1);
+		}
+		else {
+			pause.setText("PAUSED", 550, 120, 2);
 		}
 
 		//update all textures
 		playerStats.createTextures(newWindow.getRenderer());
+		enemyStats.createTextures(newWindow.getRenderer());
+		pause.createTextures(newWindow.getRenderer());
 		if (player.getSprite().getNeedsUpdate()) {
 			player.createTexture(newWindow.getRenderer());
 		}
@@ -344,9 +353,18 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		if (background.getNeedsUpdate()) {
 			background.createTexture(newWindow.getRenderer());
 		}
+		vector<sprite> text = pause.getLetters();
+		vector<sprite> pStats = playerStats.getLetters();
+		for (int i = 0; i < pStats.size(); i++) {
+			text.push_back(pStats.at(i));
+		}
+		vector<sprite> eStats = enemyStats.getLetters();
+		for (int i = 0; i < eStats.size(); i++) {
+			text.push_back(eStats.at(i));
+		}
 		
 		//draw the frame
-		newWindow.drawFrame(background, player, enemy , playerStats.getLetters());
+		newWindow.drawFrame(background, player, enemy , text);
 
 		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;

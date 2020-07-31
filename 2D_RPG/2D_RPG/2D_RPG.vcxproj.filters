@@ -94,5 +94,8 @@
     <Image Include="Sprites\text.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\icons.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

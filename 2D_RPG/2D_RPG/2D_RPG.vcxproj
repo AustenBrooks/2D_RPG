@@ -170,6 +170,7 @@
     <Image Include="Sprites\basic animations.png" />
     <Image Include="Sprites\BLU.bmp" />
     <Image Include="Sprites\forest.png" />
+    <Image Include="Sprites\icons.png" />
     <Image Include="Sprites\mainMenu.png" />
     <Image Include="Sprites\play.png" />
     <Image Include="Sprites\playSelected.png" />

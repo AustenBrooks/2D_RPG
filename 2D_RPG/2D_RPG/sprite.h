@@ -51,6 +51,7 @@ public:
 	void setSpriteSheet(string filepath, int spriteSheetX, int spriteSheetY);
 	void setSpriteXY(int spriteSheetX, int spriteSheetY);
 	void setAnimFrame(int numFrames);
+	void setScale(float scaler);
 };
 
 #endif

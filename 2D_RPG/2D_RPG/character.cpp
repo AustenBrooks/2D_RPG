@@ -376,11 +376,36 @@ void character::defendPhysical(float dmg) {
 	currentHealth -= (dmg - (dmg * def));
 }
 
+void character::defendMagical(float dmg) {
+	currentHealth -= dmg;
+}
+
 float character::attack() {
 	attackFrame = 0;
-	float stamBoost = (float)currentStamina / (float)stamina;
+	float stamBoost = currentStamina / stamina;
 	float dmg = damage * stamBoost;
 	return dmg;
+}
+
+void character::potion() {
+	currentHealth += 10;
+	if (currentHealth > health) {
+		currentHealth = health;
+	}
+	attackFrame = 0;
+}
+
+float character::cast(spells spell) {
+	float magBoost = currentMagic / magic;
+	if (spell == fireball) {
+		if (currentMagic < 15) {
+			return 0;
+		}
+		currentMagic -= 15;
+		float dmg = 10 * magBoost;
+		attackFrame = 0;
+		return dmg;
+	}
 }
 
 
@@ -427,4 +452,8 @@ sprite character::getSprite() {
 //setters
 void character::setSpriteSheet(string filename, int spriteSheetX, int spriteSheetY) {
 	charSprite.setSpriteSheet(filename, spriteSheetX, spriteSheetY);
+}
+
+void character::setScale(float scaler) {
+	charSprite.setScale(scaler);
 }

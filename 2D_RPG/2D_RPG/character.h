@@ -20,6 +20,8 @@ enum animation {
 
 enum facing {up, down, left, right};
 
+enum spells {fireball};
+
 class character {
 private:
 	sprite charSprite;
@@ -79,8 +81,10 @@ public:
 	bool isAlive();
 	bool canAct();
 	void defendPhysical(float damage);
+	void defendMagical(float damage);
 	float attack();
-	void cast();
+	void potion();
+	float cast(spells  spell);
 	void regen();
 	string displayStats();
 
@@ -91,6 +95,7 @@ public:
 
 	//setters
 	void setSpriteSheet(string filename, int spriteSheetX, int spriteSheetY);
+	void setScale(float scaler);
 };
 
 #endif

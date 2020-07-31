@@ -272,17 +272,28 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
 
-	enemy.moveTo(400, 550);
+	enemy.moveTo(650, 550);
 	bool isPaused = true;
 	
 	enum action { none, attack, items, cast };
 	action playerQueue = none;
 	action enemyQueue = attack;
+	float pScale = player.getSprite().getScale();
+	float eScale = enemy.getSprite().getScale();
+	player.setScale(2);
+	enemy.setScale(2);
 
 	text playerStats(player.displayStats(), 220, 500, 1);
 	text enemyStats(enemy.displayStats(), 500, 500, 1);
 	text pause("PAUSED", 550, 100, 2);
+	
+	sprite icons(510, 240, 195, 64, false, "Sprites/icons.png");
+	text keyAttack("U", 535, 304, 2);
+	text keyItem("I", 600, 304, 2);
+	text keyCast("O", 660, 304, 2);
+
 	int frame = 0;
+
 	while (player.isAlive() && enemy.isAlive()) {
 		int timeStart = SDL_GetTicks();
 
@@ -306,6 +317,9 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		else if (inputs.isKeyPressed(KEY_ITEMS)) {
 			playerQueue = items;
 		}
+		else if (inputs.isKeyPressed(KEY_CAST)) {
+			playerQueue = cast;
+		}
 
 		//if game isnt paused, then do the fight
 		if(!isPaused) {
@@ -318,7 +332,16 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 					std::cout << "player attacks \n";
 				}
 				else if (playerQueue == items) {
-					//use item
+					player.potion();
+					std::cout << "player uses potion \n";
+					playerQueue = none;
+				}
+				else if (playerQueue == cast) {
+					float dmg = player.cast(fireball);
+					if (dmg > 0) {
+						enemy.defendMagical(dmg);
+						std::cout << "player cast fireball \n";
+					}
 					playerQueue = none;
 				}
 			}
@@ -344,6 +367,10 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		playerStats.createTextures(newWindow.getRenderer());
 		enemyStats.createTextures(newWindow.getRenderer());
 		pause.createTextures(newWindow.getRenderer());
+		keyAttack.createTextures(newWindow.getRenderer());
+		keyItem.createTextures(newWindow.getRenderer());
+		keyCast.createTextures(newWindow.getRenderer());
+
 		if (player.getSprite().getNeedsUpdate()) {
 			player.createTexture(newWindow.getRenderer());
 		}
@@ -353,16 +380,26 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		if (background.getNeedsUpdate()) {
 			background.createTexture(newWindow.getRenderer());
 		}
+
+		//combine all text
 		vector<sprite> text = pause.getLetters();
-		vector<sprite> pStats = playerStats.getLetters();
-		for (int i = 0; i < pStats.size(); i++) {
-			text.push_back(pStats.at(i));
+		if (1) {
+			vector<sprite> pStats = playerStats.getLetters();
+			for (int i = 0; i < pStats.size(); i++) {
+				text.push_back(pStats.at(i));
+			}
+			vector<sprite> eStats = enemyStats.getLetters();
+			for (int i = 0; i < eStats.size(); i++) {
+				text.push_back(eStats.at(i));
+			}
+			text.push_back(keyAttack.getLetters().at(0));
+			text.push_back(keyItem.getLetters().at(0));
+			text.push_back(keyCast.getLetters().at(0));
 		}
-		vector<sprite> eStats = enemyStats.getLetters();
-		for (int i = 0; i < eStats.size(); i++) {
-			text.push_back(eStats.at(i));
-		}
-		
+
+		icons.createTexture(newWindow.getRenderer());
+		text.push_back(icons);
+
 		//draw the frame
 		newWindow.drawFrame(background, player, enemy , text);
 
@@ -372,4 +409,6 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 			SDL_Delay(FRAME_TIME - elapsedTime);
 		}
 	}
+	player.setScale(pScale);
+	enemy.setScale(eScale);
 }

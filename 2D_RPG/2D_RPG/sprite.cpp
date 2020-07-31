@@ -164,3 +164,7 @@ void sprite::setSpriteXY(int spriteSheetX, int spriteSheetY) {
 void sprite::setAnimFrame(int numFrames) {
 	spriteX = numFrames * (r.w + 1);
 }
+
+void sprite::setScale(float scaler) {
+	scale = scaler;
+}

@@ -6,6 +6,8 @@
 #include <vector>
 #include "sprite.h"
 
+#define textSprite "Sprites/text.png"
+
 using std::string;
 using std::vector;
 

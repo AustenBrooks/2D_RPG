@@ -54,16 +54,7 @@ int main(int argc, char* args[]) {
 	bool isQuitting = false;
 
 	fight(newWindow, inputs, actors.at(0), actors.at(1));
-	text one("the quick brown fox jumped over the lazy dog\nTHE QUICK BROWN FOX JUMPED OVER THE LAZY DOG,./:", 120, 300, 1);
-
-	while (0) {
-		if (background.getNeedsUpdate()) {
-			background.createTexture(newWindow.getRenderer());
-		}
-		one.createTextures(newWindow.getRenderer());
-		newWindow.drawFrame(background, one.getLetters());
-	}
-
+	
 	while (1) {
 		if (isMainMenu) {
 			isQuitting = mainMenu(newWindow, inputs);

@@ -20,13 +20,16 @@ character::character() {
 	stamina = 50;
 	magic = 50;
 
-	healthRegen = 1;
-	staminaRegen = 1;
-	magicRegen = 1;
+	healthRegen = .001;
+	staminaRegen = .01;
+	magicRegen = .01;
 
 	damage = 5;
 	speed = 1;
 	armor = 0;
+
+	spellCost = 1;
+	spellMag = 1;
 
 	string name = "Bob";
 }
@@ -45,22 +48,28 @@ character::character(string name, type base) {
 
 		level = 1;
 		xp = 0;
-
+		/*
 		health = 50;
 		stamina = 50;
 		magic = 50;
+		*/
+		calcStats();
 
 		currentHealth = health;
 		currentStamina = stamina;
 		currentMagic = magic;
-
-		healthRegen = .01;
+		/*
+		healthRegen = .001;
 		staminaRegen = .01;
 		magicRegen = .01;
 
 		damage = 5;
 		speed = 1;
 		armor = 0;
+
+		spellCost = 1;
+		spellMag = 1;
+		*/
 	}
 
 	this->name = name;
@@ -398,11 +407,11 @@ void character::potion() {
 float character::cast(spells spell) {
 	float magBoost = currentMagic / magic;
 	if (spell == fireball) {
-		if (currentMagic < 15) {
+		if (currentMagic < (15*spellCost)) {
 			return 0;
 		}
-		currentMagic -= 15;
-		float dmg = 10 * magBoost;
+		float dmg = (10 + 5 * magBoost) * spellMag;
+		currentMagic -= 15 * spellCost;
 		attackFrame = 0;
 		return dmg;
 	}
@@ -434,6 +443,22 @@ string character::displayStats() {
 
 	string stats = stream.str();
 	return stats;
+}
+
+void character::calcStats() {
+	health = 5 * endurance * level;
+	stamina = 5 * agility * level;
+	magic = 5 * intelligence * level;
+
+	healthRegen = (float) strength / 10000.0;
+	staminaRegen = (float) dexterity / 1000.0;
+	magicRegen = (float) wisdom / 1000.0;
+
+	damage = 5.0 * ((float) strength / 10.0);
+	speed = (float) dexterity / 10.0;
+	spellCost = 10.0 / (float) wisdom;
+
+	spellMag = (float) intelligence / 10.0;
 }
 
 //getters

@@ -91,10 +91,10 @@
     <Image Include="Sprites\basic animations.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Sprites\text.png">
+    <Image Include="Sprites\icons.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Sprites\icons.png">
+    <Image Include="Sprites\text32.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

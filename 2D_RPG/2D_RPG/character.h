@@ -38,6 +38,7 @@ private:
 	float healthRegen, staminaRegen, magicRegen;
 
 	float damage, speed, armor;
+	float spellCost, spellMag;
 
 	int attackFrame = 0;
 
@@ -80,13 +81,17 @@ public:
 	//combat functions
 	bool isAlive();
 	bool canAct();
+
 	void defendPhysical(float damage);
 	void defendMagical(float damage);
+	
 	float attack();
 	void potion();
 	float cast(spells  spell);
+	
 	void regen();
 	string displayStats();
+	void calcStats();
 
 	//getters
 	animation getCurrentAnimation();

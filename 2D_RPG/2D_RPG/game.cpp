@@ -280,17 +280,18 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 	action enemyQueue = attack;
 	float pScale = player.getSprite().getScale();
 	float eScale = enemy.getSprite().getScale();
+
 	player.setScale(2);
 	enemy.setScale(2);
 
-	text playerStats(player.displayStats(), 220, 500, 1);
-	text enemyStats(enemy.displayStats(), 500, 500, 1);
-	text pause("PAUSED", 550, 100, 2);
+	text playerStats(player.displayStats(), 220, 500, .5);
+	text enemyStats(enemy.displayStats(), 500, 500, .5);
+	text pause("PAUSED", 550, 100, 1);
 	
 	sprite icons(510, 240, 195, 64, false, "Sprites/icons.png");
-	text keyAttack("U", 535, 304, 2);
-	text keyItem("I", 600, 304, 2);
-	text keyCast("O", 660, 304, 2);
+	text keyAttack("U", 535, 304, 1);
+	text keyItem("I", 600, 304, 1);
+	text keyCast("O", 660, 304, 1);
 
 	int frame = 0;
 
@@ -323,7 +324,7 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 
 		//if game isnt paused, then do the fight
 		if(!isPaused) {
-			pause.setText("", 550, 120, 2);
+			pause.setText("", 550, 120, 1);
 			frame++;
 			if (player.canAct()) {
 				if (playerQueue == attack) {
@@ -356,16 +357,17 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 				player.regen();
 				enemy.regen();
 			}
-			playerStats.setText(player.displayStats(), 220, 500, 1);
-			enemyStats.setText(enemy.displayStats(), 500, 500, 1);
+			playerStats.setText(player.displayStats(), 220, 500, .5);
+			enemyStats.setText(enemy.displayStats(), 500, 500, .5);
 		}
 		else {
-			pause.setText("PAUSED", 550, 120, 2);
+			pause.setText("PAUSED", 550, 120, 1);
 		}
 
 		//update all textures
 		playerStats.createTextures(newWindow.getRenderer());
 		enemyStats.createTextures(newWindow.getRenderer());
+		icons.createTexture(newWindow.getRenderer());
 		pause.createTextures(newWindow.getRenderer());
 		keyAttack.createTextures(newWindow.getRenderer());
 		keyItem.createTextures(newWindow.getRenderer());
@@ -382,26 +384,24 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 		}
 
 		//combine all text
-		vector<sprite> text = pause.getLetters();
+		vector<sprite> misc = pause.getLetters();
 		if (1) {
 			vector<sprite> pStats = playerStats.getLetters();
 			for (int i = 0; i < pStats.size(); i++) {
-				text.push_back(pStats.at(i));
+				misc.push_back(pStats.at(i));
 			}
 			vector<sprite> eStats = enemyStats.getLetters();
 			for (int i = 0; i < eStats.size(); i++) {
-				text.push_back(eStats.at(i));
+				misc.push_back(eStats.at(i));
 			}
-			text.push_back(keyAttack.getLetters().at(0));
-			text.push_back(keyItem.getLetters().at(0));
-			text.push_back(keyCast.getLetters().at(0));
+			misc.push_back(icons);
+			misc.push_back(keyAttack.getLetters().at(0));
+			misc.push_back(keyItem.getLetters().at(0));
+			misc.push_back(keyCast.getLetters().at(0));
 		}
 
-		icons.createTexture(newWindow.getRenderer());
-		text.push_back(icons);
-
 		//draw the frame
-		newWindow.drawFrame(background, player, enemy , text);
+		newWindow.drawFrame(background, player, enemy , misc);
 
 		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;

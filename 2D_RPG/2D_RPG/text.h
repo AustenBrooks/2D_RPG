@@ -6,7 +6,9 @@
 #include <vector>
 #include "sprite.h"
 
-#define textSprite "Sprites/text.png"
+#define TEXT_SPRITE "Sprites/text32.png"
+#define TEXT_WIDTH 26
+#define TEXT_HEIGHT 40
 
 using std::string;
 using std::vector;

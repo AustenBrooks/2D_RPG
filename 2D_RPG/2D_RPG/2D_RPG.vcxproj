@@ -178,7 +178,7 @@
     <Image Include="Sprites\quitSelected.png" />
     <Image Include="Sprites\settings.png" />
     <Image Include="Sprites\settingsSelected.png" />
-    <Image Include="Sprites\text.png" />
+    <Image Include="Sprites\text32.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

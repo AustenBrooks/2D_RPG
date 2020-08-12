@@ -15,9 +15,11 @@ Todo:
 
 	//Add objects/collision
 
-	Add stats+skills
+	//Add stats
+	
+	Add skills
 
-	Add combat system
+	//Add combat system
 
 	add character progression
 

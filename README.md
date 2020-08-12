@@ -16,19 +16,13 @@ Todo:
 	//Add objects/collision
 
 	//Add stats
-	
-	Add skills
 
 	//Add combat system
 
 	add character progression
 
-	move the world when the character is in the center
+	//move the world when the character is in the center
 	
-	add dialouge
-
-	make a tutorial level
-
 	create save system
 
 	create settings system
@@ -36,9 +30,15 @@ Todo:
 if all of the above is done, i'll consider this project finished as the rest is less technical and more creative,
 but if am feeling particularly inspired, will potentially do:
 
+	add dialouge
+
+	make a tutorial level
+	
 	make world map (towns/cities, forests/other random encounter areas, etc)
 
 	add story
+	
+	add skills
 
 	use actual art for animations
 	

@@ -6,12 +6,12 @@ character::character() {
 	sprite charSprite;
 	this->charSprite = charSprite;
 
-	strength = 10;
-	endurance = 10;
-	dexterity = 10;
-	agility = 10;
-	wisdom = 10;
-	intelligence= 10;
+	attribute.strength = 10;
+	attribute.endurance = 10;
+	attribute.dexterity = 10;
+	attribute.agility = 10;
+	attribute.wisdom = 10;
+	attribute.intelligence= 10;
 
 	level = 1;
 	xp = 0;
@@ -39,12 +39,12 @@ character::character(string name, type base) {
 		sprite charSprite(0, 0, 32, 64, true, "Sprites/basic animations.png", 33, 0, 1);
 		this->charSprite = charSprite;
 
-		strength = 10;
-		endurance = 10;
-		dexterity = 10;
-		agility = 10;
-		wisdom = 10;
-		intelligence = 10;
+		attribute.strength = 10;
+		attribute.endurance = 10;
+		attribute.dexterity = 10;
+		attribute.agility = 10;
+		attribute.wisdom = 10;
+		attribute.intelligence = 10;
 
 		level = 1;
 		xp = 0;
@@ -494,23 +494,58 @@ string character::displayStats() {
 	return stats;
 }
 
+
+//returns how many points the player will get to put into attrubutes
+int character::gainXP(int xpGained) {
+	int points = 0;
+	
+	xp += xpGained;
+	if (xp > 100 * level) {
+		xp -= 100 * level;
+		level++;
+
+		if (!(level % 5)) {
+			points++;
+		}
+		if (!(level % 10)) {
+			points++;
+		}
+		calcStats();
+	}
+
+	return points;
+}
+
+void character::levelAttributes(attributes increaseAttribute) {
+	attribute.strength += increaseAttribute.strength;
+	attribute.endurance += increaseAttribute.strength;
+	attribute.dexterity += increaseAttribute.dexterity;
+	attribute.agility += increaseAttribute.agility;
+	attribute.wisdom += increaseAttribute.wisdom;
+	attribute.intelligence += increaseAttribute.intelligence;
+}
+
 void character::calcStats() {
-	health = 5 * endurance * level;
-	stamina = 5 * agility * level;
-	magic = 5 * intelligence * level;
+	health = 5 * attribute.endurance * level;
+	stamina = 5 * attribute.agility * level;
+	magic = 5 * attribute.intelligence * level;
 
-	healthRegen = (float) strength / 10000.0;
-	staminaRegen = (float) dexterity / 1000.0;
-	magicRegen = (float) wisdom / 1000.0;
+	healthRegen = (float) attribute.strength / 10000.0;
+	staminaRegen = (float) attribute.dexterity / 1000.0;
+	magicRegen = (float) attribute.wisdom / 1000.0;
 
-	damage = 5.0 * ((float) strength / 10.0);
-	speed = (float) dexterity / 10.0;
-	spellCost = 10.0 / (float) wisdom;
+	damage = 5.0 * ((float) attribute.strength / 10.0);
+	speed = (float) attribute.dexterity / 10.0;
+	spellCost = 10.0 / (float) attribute.wisdom;
 
-	spellMag = (float) intelligence / 10.0;
+	spellMag = (float) attribute.intelligence / 10.0;
 }
 
 //getters
+int character::getXpFromKill() {
+	return level * 5;
+}
+
 animation character::getCurrentAnimation() {
 	return currentAnimation;
 }

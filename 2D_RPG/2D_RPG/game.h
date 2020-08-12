@@ -15,12 +15,12 @@
 #define FPS 120
 #define FRAME_TIME (float)(1000 / FPS)
 
-bool mainMenu(window& newWindow, input inputs);
+bool mainMenu(window& newWindow);
 
 bool willCollide(character& player, vector<sprite> objects, facing direction);
 
 bool isGrounded(character& player, vector<sprite> objects);
 
-void fight(window& newWindow, input inputs, character& player, character enemy);
+bool fight(window& newWindow, character& player, character enemy);
 
 #endif

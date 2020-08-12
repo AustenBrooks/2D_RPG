@@ -58,7 +58,7 @@ int main(int argc, char* args[]) {
 	bool isMainMenu = true;
 	bool isQuitting = false;
 
-	//fight(newWindow, inputs, actors.at(0), actors.at(1));
+	fight(newWindow, actors.at(0), actors.at(1));
 	
 	//correction frame is used to approximate the characters animation frame
 	//this is only used when moving everything but the player
@@ -67,7 +67,7 @@ int main(int argc, char* args[]) {
 
 	while (1) {
 		if (isMainMenu) {
-			isQuitting = mainMenu(newWindow, inputs);
+			isQuitting = mainMenu(newWindow);
 			isMainMenu = false;
 		}
 
@@ -89,7 +89,6 @@ int main(int argc, char* args[]) {
 		if (events.type == SDL_QUIT) {
 			return 0;
 		}
-
 
 		//if you're not grounded and not already jumping/falling, then fall
 		if (!isGrounded(actors.at(0), platforms) && actors.at(0).getCurrentAnimation() != falling && actors.at(0).getCurrentAnimation() != fallingStill && actors.at(0).getCurrentAnimation() != jumping && actors.at(0).getCurrentAnimation() != jumpingStill) {

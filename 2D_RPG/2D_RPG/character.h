@@ -23,14 +23,18 @@ enum facing {up, down, left, right};
 
 enum spells {fireball};
 
+struct attributes {
+	int strength, endurance;
+	int dexterity, agility;
+	int wisdom, intelligence;
+};
+
 class character {
 private:
 	sprite charSprite;
 
 	//combat stats
-	int strength, endurance;
-	int dexterity, agility;
-	int wisdom, intelligence;
+	attributes attribute;
 
 	int level, xp;
 
@@ -94,9 +98,14 @@ public:
 	
 	void regen();
 	string displayStats();
+
+	//leveling functions
+	int gainXP(int xpGained);
+	void levelAttributes(attributes increaseAttribute);
 	void calcStats();
 
 	//getters
+	int getXpFromKill();
 	animation getCurrentAnimation();
 	facing getDirection();
 	sprite getSprite();

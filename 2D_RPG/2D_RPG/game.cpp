@@ -1,8 +1,8 @@
 #include "game.h"
 
 
-bool mainMenu(window& newWindow, input inputs) {
-
+bool mainMenu(window& newWindow) {
+	input inputs;
 	SDL_Event events;
 	sprite background("Sprites/mainMenu.png");
 
@@ -268,7 +268,8 @@ bool isGrounded(character& player, vector<sprite> objects) {
 	return false;
 }
 
-void fight(window& newWindow, input inputs, character& player, character enemy) {
+bool fight(window& newWindow, character& player, character enemy) {
+	input inputs; 
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
 
@@ -383,6 +384,7 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 			background.createTexture(newWindow.getRenderer());
 		}
 
+		
 		//combine all text
 		vector<sprite> misc = pause.getLetters();
 		if (1) {
@@ -409,6 +411,18 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 			SDL_Delay(FRAME_TIME - elapsedTime);
 		}
 	}
+
 	player.setScale(pScale);
 	enemy.setScale(eScale);
+
+	if (player.isAlive()) {
+		int points = player.gainXP(enemy.getXpFromKill());
+		if (points) {
+			//chooseStats(newWindow, points);
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
 }

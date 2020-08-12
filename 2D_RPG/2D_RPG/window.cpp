@@ -70,13 +70,19 @@ void window::drawFrame(sprite background, character player, character enemy, vec
 	SDL_RenderPresent(renderer);
 }
 
+void window::writeText(vector<sprite> text) {
+	for (int i = 0; i < text.size(); i++) {
+		renderSprite(text.at(i));
+	}
+	SDL_RenderPresent(renderer);
+}
+
 void window::renderSprite(sprite s) {
 	SDL_Rect r;
 	r.x = s.getSpriteX();
 	r.y = s.getSpriteY();
 	r.w = s.getRectangle().w;
 	r.h = s.getRectangle().h;
-
 
 	SDL_Rect l;
 	l = s.getRectangle();

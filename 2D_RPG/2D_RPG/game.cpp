@@ -273,7 +273,7 @@ void fight(window& newWindow, input inputs, character& player, character enemy) 
 	sprite background("Sprites/forest.png");
 
 	enemy.moveTo(650, 550);
-	bool isPaused = true;
+	bool isPaused = AUTO_COMBAT_PAUSE;
 	
 	enum action { none, attack, items, cast };
 	action playerQueue = none;

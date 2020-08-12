@@ -8,6 +8,7 @@
 #include "character.h"
 #include "keybinds.h"
 #include "text.h"
+#include "settings.h"
 
 #include <iostream>
 

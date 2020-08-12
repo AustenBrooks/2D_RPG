@@ -237,6 +237,27 @@ void character::animate() {
 		}
 		return;
 	}
+	if (currentAnimation == jumpingStill) {
+		animationFrame++;
+
+		if (animationFrame <= jumpFrame) {
+			if (animationFrame < jumpFrame / 2) {
+				charSprite.moveBy(0, -2);
+			}
+			else if (animationFrame < 3 * jumpFrame / 4) {
+				charSprite.moveBy(0, -1);
+			}
+			else if (!(animationFrame % 2)) {
+				charSprite.moveBy(0, -1);
+			}
+		}
+		else if (animationFrame > jumpFrame) {
+			jumpFrame = 0;
+			animationFrame = 0;
+			currentAnimation = fallingStill;
+		}
+		return;
+	}
 	if (currentAnimation == falling) {
 		animationFrame++;
 
@@ -261,6 +282,22 @@ void character::animate() {
 			if (!(animationFrame % 2)) {
 				charSprite.moveBy(-1, 0);
 			}
+		}
+		return;
+	}
+	if (currentAnimation == fallingStill) {
+		animationFrame++;
+
+		if (animationFrame < 12) {
+			if (!(animationFrame % 2)) {
+				charSprite.moveBy(0, 1);
+			}
+		}
+		else if (animationFrame < 24) {
+			charSprite.moveBy(0, 1);
+		}
+		else {
+			charSprite.moveBy(0, 2);
 		}
 		return;
 	}
@@ -342,6 +379,14 @@ void character::fall() {
 	animationFrame = 0;
 }
 
+void character::vertJump() {
+	currentAnimation = jumpingStill;
+}
+
+void character::vertFall() {
+	currentAnimation = fallingStill;
+}
+
 void character::bonk() {
 	direction = down;
 }
@@ -414,6 +459,10 @@ float character::cast(spells spell) {
 		currentMagic -= 15 * spellCost;
 		attackFrame = 0;
 		return dmg;
+	}
+	else {
+		//error if somehow no applicable spells are passed
+		return 0;
 	}
 }
 

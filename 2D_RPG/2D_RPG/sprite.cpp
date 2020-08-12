@@ -81,18 +81,6 @@ void sprite::moveTo(int posX, int posY) {
 void sprite::moveBy(int x, int y) {
 	r.x += x;
 	r.y += y;
-	if (r.x < 0) {
-		r.x = 0;
-	}
-	if (r.y < 0) {
-		r.y = 0;
-	}
-	if (r.x > (1280 - r.w)) {
-		r.x = (1280 - r.w);
-	}
-	if (r.y > (720 - r.h)) {
-		r.y = (720 - r.h);
-	}
 }
 
 SDL_Rect sprite::getRectangle() {

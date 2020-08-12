@@ -15,7 +15,8 @@ enum animation {
 	walkingLeft, walkingRight,
 	walkingLeftStill, walkingRightStill,
 	turning,
-	crouching, jumping, falling
+	crouching, jumping, falling,
+	jumpingStill, fallingStill
 };
 
 enum facing {up, down, left, right};
@@ -74,8 +75,10 @@ public:
 	void crouch();
 	void jump();
 	void fall();
+	void vertJump();
+	void vertFall();
 	void bonk();
-
+	
 	void stop();
 
 	//combat functions

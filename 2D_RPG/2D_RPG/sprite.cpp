@@ -68,9 +68,11 @@ sprite::sprite(int w, int h, bool hasCollision, string filename) {
 }
 
 void sprite::createTexture(SDL_Renderer* renderer) {
-	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(renderer, loadedSprite);
-	this->spriteSheet = spriteSheet;
-	doesSpriteNeedUpdate = false;
+	if (doesSpriteNeedUpdate) {
+		SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(renderer, loadedSprite);
+		this->spriteSheet = spriteSheet;
+		doesSpriteNeedUpdate = false;
+	}
 }
 
 void sprite::moveTo(int posX, int posY) {

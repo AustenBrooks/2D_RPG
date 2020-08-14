@@ -7,6 +7,8 @@
 #include <string>
 #include "sprite.h"
 #include "character.h"
+#include "text.h"
+#include "settings.h"
 
 using std::vector;
 using std::string;
@@ -16,22 +18,20 @@ private:
 	SDL_Window* win;
 	SDL_Renderer* renderer;
 
-	int windowWidth;
-	int windowHeight;
-
 public:
 	window();
-	window(int width, int height);
 	~window();
 
-	void drawFrame(sprite background, vector<sprite> buttons);
-	void drawFrame(sprite background, vector<sprite> platforms, vector<character> actors);
-	void drawFrame(sprite background, character player, character enemy, vector<sprite> letters);
-	void writeText(vector<sprite> text);
+	void renderBackground(sprite background);
 	void renderSprite(sprite s);
+	void renderPlatforms(vector<sprite> platforms);
+	void renderCharacter(character actor);
+	void renderActors(vector<character> actors);
+	void renderText(vector<text> allText);
+
+	void drawFrame();
 
 	SDL_Renderer* getRenderer();
 };
-
 
 #endif

@@ -85,7 +85,9 @@ void character::moveBy(int xPos, int yPos) {
 }
 
 void character::createTexture(SDL_Renderer* renderer) {
-	charSprite.createTexture(renderer);
+	if (charSprite.getNeedsUpdate()) {
+		charSprite.createTexture(renderer);
+	}
 }
 
 //animation functions

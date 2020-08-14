@@ -5,14 +5,13 @@
 #include "sprite.h"
 #include "character.h"
 #include "text.h"
+#include "settings.h"
 
 int main(int argc, char* args[]) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Event events;
 
-	const int WINDOW_WIDTH = 1280;
-	const int WINDOW_HEIGHT = 720;
-	window newWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+	window gameWindow;
 	input inputs;
 
 	sprite background("Sprites/forest.png");
@@ -29,7 +28,7 @@ int main(int argc, char* args[]) {
 	enemy.turnLeft();
 
 	actors.push_back(austen);
-	actors.push_back(enemy);
+	unloadedActors.push_back(enemy);
 
 	sprite bottom(0, 720, 1280, 1, true, "Sprites/blu.bmp");
 
@@ -43,7 +42,7 @@ int main(int argc, char* args[]) {
 	platforms.push_back(floor);
 	platforms.push_back(ceiling);
 
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 7; i++) {
 		platforms.push_back(box);
 	}
 
@@ -54,11 +53,13 @@ int main(int argc, char* args[]) {
 	platforms.at(7).moveTo(400, 432);
 
 	platforms.at(8).moveTo(120, 624);
+	
+	platforms.at(9).moveTo(720, 700);
 
 	bool isMainMenu = true;
 	bool isQuitting = false;
 
-	fight(newWindow, actors.at(0), actors.at(1));
+	//fight(gameWindow, actors.at(0), actors.at(1));
 	
 	//correction frame is used to approximate the characters animation frame
 	//this is only used when moving everything but the player
@@ -67,7 +68,7 @@ int main(int argc, char* args[]) {
 
 	while (1) {
 		if (isMainMenu) {
-			isQuitting = mainMenu(newWindow);
+			isQuitting = mainMenu(gameWindow);
 			isMainMenu = false;
 		}
 
@@ -89,7 +90,7 @@ int main(int argc, char* args[]) {
 		if (events.type == SDL_QUIT) {
 			return 0;
 		}
-
+		
 		//if you're not grounded and not already jumping/falling, then fall
 		if (!isGrounded(actors.at(0), platforms) && actors.at(0).getCurrentAnimation() != falling && actors.at(0).getCurrentAnimation() != fallingStill && actors.at(0).getCurrentAnimation() != jumping && actors.at(0).getCurrentAnimation() != jumpingStill) {
 			actors.at(0).fall();
@@ -136,7 +137,7 @@ int main(int argc, char* args[]) {
 						for (int i = 1; i < actors.size(); i++) {
 							actors.at(i).moveBy(sideDistance, 0);
 						}
-						for (int i = 1; i < unloadedActors.size(); i++) {
+						for (int i = 0; i < unloadedActors.size(); i++) {
 							unloadedActors.at(i).moveBy(sideDistance, 0);
 						}
 					}
@@ -174,7 +175,7 @@ int main(int argc, char* args[]) {
 						for (int i = 1; i < actors.size(); i++) {
 							actors.at(i).moveBy(sideDistance, 0);
 						}
-						for (int i = 1; i < unloadedActors.size(); i++) {
+						for (int i = 0; i < unloadedActors.size(); i++) {
 							unloadedActors.at(i).moveBy(sideDistance, 0);
 						}
 					}
@@ -215,7 +216,7 @@ int main(int argc, char* args[]) {
 						for (int i = 1; i < actors.size(); i++) {
 							actors.at(i).moveBy(-1, 0);
 						}
-						for (int i = 1; i < unloadedActors.size(); i++) {
+						for (int i = 0; i < unloadedActors.size(); i++) {
 							unloadedActors.at(i).moveBy(-1, 0);
 						}
 					}
@@ -256,7 +257,7 @@ int main(int argc, char* args[]) {
 						for (int i = 1; i < actors.size(); i++) {
 							actors.at(i).moveBy(1, 0);
 						}
-						for (int i = 1; i < unloadedActors.size(); i++) {
+						for (int i = 0; i < unloadedActors.size(); i++) {
 							unloadedActors.at(i).moveBy(1, 0);
 						}
 					}
@@ -275,27 +276,97 @@ int main(int argc, char* args[]) {
 		else if (inputs.isKeyPressed(KEY_LEFT) || inputs.isKeyHeld(KEY_LEFT)) {
 			actors.at(0).walkLeft();
 		}
+		
 
 		//TODO: add the game lol
 
 
-		//update all textures for sprites
-		for (int i = 0; i < actors.size(); i++) {
-			if (actors.at(i).getSprite().getNeedsUpdate()) {
-				actors.at(i).createTexture(newWindow.getRenderer());
-			}
-		}
+
+		//unload offscreen sprites
+		vector<int> unloadIndex;
 		for (int i = 0; i < platforms.size(); i++) {
-			if (platforms.at(i).getNeedsUpdate()) {
-				platforms.at(i).createTexture(newWindow.getRenderer());
+			int platLeft = platforms.at(i).getRectangle().x;
+			int platRight = platforms.at(i).getRectangle().x + platforms.at(i).getRectangle().w;
+			
+			if (platRight < 0 || platLeft > WINDOW_WIDTH) {
+				unloadIndex.push_back(i);
 			}
-		}
-		if (background.getNeedsUpdate()) {
-			background.createTexture(newWindow.getRenderer());
 		}
 
+		for (int i = unloadIndex.size() - 1; i >= 0; i--) {
+			int index = unloadIndex.at(i);
+			unloadedPlatforms.push_back(platforms.at(index));
+			platforms.erase(platforms.begin() + index);
+		}
+		unloadIndex.clear();
+
+		//reload onscreen sprites
+		vector<int> loadIndex;
+		for (int i = 0; i < unloadedPlatforms.size(); i++) {
+			int platLeft = unloadedPlatforms.at(i).getRectangle().x;
+			int platRight = unloadedPlatforms.at(i).getRectangle().x + unloadedPlatforms.at(i).getRectangle().w;
+			
+			if (platRight > 0 && platLeft < WINDOW_WIDTH) {
+				loadIndex.push_back(i);
+			}
+		}
+
+		for (int i = loadIndex.size() - 1; i >= 0; i--) {
+			int index = loadIndex.at(i);
+			platforms.push_back(unloadedPlatforms.at(index));
+			unloadedPlatforms.erase(unloadedPlatforms.begin() + index);
+		}
+		loadIndex.clear();
+
+		//unload offscreen actors
+		for (int i = 1; i < actors.size(); i++) {
+			int actorLeft = actors.at(i).getSprite().getRectangle().x;
+			int actorRight = actors.at(i).getSprite().getRectangle().x + actors.at(i).getSprite().getRectangle().w;
+			
+			if (actorRight < 0 || actorLeft > WINDOW_WIDTH) {
+				unloadIndex.push_back(i);
+			}
+		}
+
+		for (int i = unloadIndex.size() - 1; i >= 0; i--) {
+			int index = unloadIndex.at(i);
+			unloadedActors.push_back(actors.at(index));
+			actors.erase(actors.begin() + index);
+		}
+		unloadIndex.clear();
+
+		//reload onscreen actors
+		for (int i = 0; i < unloadedActors.size(); i++) {
+			int actorLeft = unloadedActors.at(i).getSprite().getRectangle().x;
+			int actorRight = unloadedActors.at(i).getSprite().getRectangle().x + unloadedActors.at(i).getSprite().getRectangle().w;
+			
+			if (actorRight > 0 && actorLeft < WINDOW_WIDTH) {
+				loadIndex.push_back(i);
+			}
+		}
+
+		for (int i = loadIndex.size() - 1; i >= 0; i--) {
+			int index = loadIndex.at(i);
+			actors.push_back(unloadedActors.at(index));
+			unloadedActors.erase(unloadedActors.begin() + index);
+		}
+		loadIndex.clear();
+
+
+		//update all textures for sprites
+		for (int i = 0; i < actors.size(); i++) {
+			actors.at(i).createTexture(gameWindow.getRenderer());
+		}
+		for (int i = 0; i < platforms.size(); i++) {
+			platforms.at(i).createTexture(gameWindow.getRenderer());
+		}
+		background.createTexture(gameWindow.getRenderer());
+
 		//draw 1 frame
-		newWindow.drawFrame(background, platforms, actors);
+		gameWindow.renderBackground(background);
+		gameWindow.renderPlatforms(platforms);
+		gameWindow.renderActors(actors);
+		gameWindow.drawFrame();
 
 		//this is to ensure the game doesn't run > fps, doing it this way does tie physics to fps, which isn't ideal
 		elapsedTime = SDL_GetTicks() - timeStart;

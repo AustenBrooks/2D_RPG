@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-bool mainMenu(window& newWindow) {
+bool mainMenu(window& gameWindow) {
 	input inputs;
 	SDL_Event events;
 	sprite background("Sprites/mainMenu.png");
@@ -74,16 +74,14 @@ bool mainMenu(window& newWindow) {
 
 		//update all textures
 		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.at(i).getNeedsUpdate()) {
-				buttons.at(i).createTexture(newWindow.getRenderer());
-			}
+			buttons.at(i).createTexture(gameWindow.getRenderer());
 		}
-		if (background.getNeedsUpdate()) {
-			background.createTexture(newWindow.getRenderer());
-		}
+		background.createTexture(gameWindow.getRenderer());
 
-		//draw the frame
-		newWindow.drawFrame(background, buttons);
+		//draw 1 frame
+		gameWindow.renderBackground(background);
+		gameWindow.renderPlatforms(buttons);
+		gameWindow.drawFrame();
 
 		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;
@@ -268,7 +266,7 @@ bool isGrounded(character& player, vector<sprite> objects) {
 	return false;
 }
 
-bool fight(window& newWindow, character& player, character enemy) {
+bool fight(window& gameWindow, character& player, character enemy) {
 	input inputs; 
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
@@ -295,6 +293,15 @@ bool fight(window& newWindow, character& player, character enemy) {
 	text keyCast("O", 660, 304, 1);
 
 	int frame = 0;
+
+	//combine all text
+	vector<text> allText;
+	allText.push_back(pause);
+	allText.push_back(playerStats);
+	allText.push_back(enemyStats);
+	allText.push_back(keyAttack);
+	allText.push_back(keyItem);
+	allText.push_back(keyCast);
 
 	while (player.isAlive() && enemy.isAlive()) {
 		int timeStart = SDL_GetTicks();
@@ -325,7 +332,7 @@ bool fight(window& newWindow, character& player, character enemy) {
 
 		//if game isnt paused, then do the fight
 		if(!isPaused) {
-			pause.setText("", 550, 120, 1);
+			allText.at(0).setText("", 550, 120, 1);
 			frame++;
 			if (player.canAct()) {
 				if (playerQueue == attack) {
@@ -358,53 +365,31 @@ bool fight(window& newWindow, character& player, character enemy) {
 				player.regen();
 				enemy.regen();
 			}
-			playerStats.setText(player.displayStats(), 220, 500, .5);
-			enemyStats.setText(enemy.displayStats(), 500, 500, .5);
+			allText.at(1).setText(player.displayStats(), 220, 500, .5);
+			allText.at(2).setText(enemy.displayStats(), 500, 500, .5);
 		}
 		else {
-			pause.setText("PAUSED", 550, 120, 1);
+			allText.at(0).setText("PAUSED", 550, 120, 1);
 		}
 
 		//update all textures
-		playerStats.createTextures(newWindow.getRenderer());
-		enemyStats.createTextures(newWindow.getRenderer());
-		icons.createTexture(newWindow.getRenderer());
-		pause.createTextures(newWindow.getRenderer());
-		keyAttack.createTextures(newWindow.getRenderer());
-		keyItem.createTextures(newWindow.getRenderer());
-		keyCast.createTextures(newWindow.getRenderer());
-
-		if (player.getSprite().getNeedsUpdate()) {
-			player.createTexture(newWindow.getRenderer());
+		background.createTexture(gameWindow.getRenderer());
+		icons.createTexture(gameWindow.getRenderer());
+		pause.createTextures(gameWindow.getRenderer());
+		player.createTexture(gameWindow.getRenderer());
+		enemy.createTexture(gameWindow.getRenderer());
+		for (int i = 0; i < allText.size(); i++) {
+			allText.at(i).createTextures(gameWindow.getRenderer());
 		}
-		if (enemy.getSprite().getNeedsUpdate()) {
-			enemy.createTexture(newWindow.getRenderer());
-		}
-		if (background.getNeedsUpdate()) {
-			background.createTexture(newWindow.getRenderer());
-		}
-
 		
-		//combine all text
-		vector<sprite> misc = pause.getLetters();
-		if (1) {
-			vector<sprite> pStats = playerStats.getLetters();
-			for (int i = 0; i < pStats.size(); i++) {
-				misc.push_back(pStats.at(i));
-			}
-			vector<sprite> eStats = enemyStats.getLetters();
-			for (int i = 0; i < eStats.size(); i++) {
-				misc.push_back(eStats.at(i));
-			}
-			misc.push_back(icons);
-			misc.push_back(keyAttack.getLetters().at(0));
-			misc.push_back(keyItem.getLetters().at(0));
-			misc.push_back(keyCast.getLetters().at(0));
-		}
-
-		//draw the frame
-		newWindow.drawFrame(background, player, enemy , misc);
-
+		//draw 1 frame
+		gameWindow.renderBackground(background);
+		gameWindow.renderCharacter(player);
+		gameWindow.renderCharacter(enemy);
+		gameWindow.renderSprite(icons);
+		gameWindow.renderText(allText);
+		gameWindow.drawFrame();
+				
 		//delay if over FPS
 		int elapsedTime = SDL_GetTicks() - timeStart;
 		if (elapsedTime < FRAME_TIME) {
@@ -418,7 +403,7 @@ bool fight(window& newWindow, character& player, character enemy) {
 	if (player.isAlive()) {
 		int points = player.gainXP(enemy.getXpFromKill());
 		if (points) {
-			//chooseStats(newWindow, points);
+			//chooseStats(gameWindow, points);
 		}
 		return true;
 	}

@@ -502,7 +502,7 @@ int character::gainXP(int xpGained) {
 	int points = 0;
 	
 	xp += xpGained;
-	if (xp > 100 * level) {
+	while (xp > 100 * level) {
 		xp -= 100 * level;
 		level++;
 
@@ -528,9 +528,9 @@ void character::levelAttributes(attributes increaseAttribute) {
 }
 
 void character::calcStats() {
-	health = 5 * attribute.endurance * level;
-	stamina = 5 * attribute.agility * level;
-	magic = 5 * attribute.intelligence * level;
+	health = 5 * (attribute.endurance + level);
+	stamina = 5 * (attribute.agility + level);
+	magic = 5 * (attribute.intelligence + level);
 
 	healthRegen = (float) attribute.strength / 10000.0;
 	staminaRegen = (float) attribute.dexterity / 1000.0;
@@ -548,6 +548,10 @@ int character::getXpFromKill() {
 	return level * 5;
 }
 
+attributes character::getAttribute() {
+	return attribute;
+}
+
 animation character::getCurrentAnimation() {
 	return currentAnimation;
 }
@@ -558,6 +562,10 @@ facing character::getDirection() {
 
 sprite character::getSprite() {
 	return charSprite;
+}
+
+int character::getAnimationFrame() {
+	return animationFrame;
 }
 
 //setters

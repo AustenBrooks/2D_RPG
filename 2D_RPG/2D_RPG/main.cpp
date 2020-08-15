@@ -19,53 +19,46 @@ int main(int argc, char* args[]) {
 	vector<sprite> unloadedPlatforms;
 	vector<character> actors;
 	vector<character> unloadedActors;
+	{
+		character austen("austen", player);
+		character enemy("enemy", player);
 
-	character austen("austen", player);
-	character enemy("enemy", player);
-	
-	austen.moveTo(175, 550);
-	enemy.moveTo(300, 576);
-	enemy.turnLeft();
+		austen.moveTo(175, 550);
+		enemy.moveTo(300, 576);
+		enemy.turnLeft();
 
-	actors.push_back(austen);
-	unloadedActors.push_back(enemy);
+		actors.push_back(austen);
+		unloadedActors.push_back(enemy);
 
-	sprite bottom(0, 720, 1280, 1, true, "Sprites/blu.bmp");
+		sprite bottom(0, 720, 1280, 1, true, "Sprites/blu.bmp");
 
-	sprite floor(160, 640, 410, 32, true, "Sprites/blu.bmp");
+		sprite floor(160, 640, 410, 32, true, "Sprites/blu.bmp");
 
-	sprite ceiling(160, 448, 224, 32, true, "Sprites/blu.bmp");
+		sprite ceiling(160, 448, 224, 32, true, "Sprites/blu.bmp");
 
-	sprite box(32, 4, true, "Sprites/blu.bmp");
+		sprite box(32, 4, true, "Sprites/blu.bmp");
 
-	platforms.push_back(bottom);
-	platforms.push_back(floor);
-	platforms.push_back(ceiling);
+		platforms.push_back(bottom);
+		platforms.push_back(floor);
+		platforms.push_back(ceiling);
 
-	for (int i = 0; i < 7; i++) {
-		platforms.push_back(box);
+		for (int i = 0; i < 7; i++) {
+			platforms.push_back(box);
+		}
+
+		platforms.at(3).moveTo(400, 608);
+		platforms.at(4).moveTo(448, 592);
+		platforms.at(5).moveTo(516, 532);
+		platforms.at(6).moveTo(432, 480);
+		platforms.at(7).moveTo(400, 432);
+
+		platforms.at(8).moveTo(120, 624);
+
+		platforms.at(9).moveTo(720, 700);
 	}
-
-	platforms.at(3).moveTo(400, 608);
-	platforms.at(4).moveTo(448, 592);
-	platforms.at(5).moveTo(516, 532);
-	platforms.at(6).moveTo(432, 480);
-	platforms.at(7).moveTo(400, 432);
-
-	platforms.at(8).moveTo(120, 624);
-	
-	platforms.at(9).moveTo(720, 700);
-
 	bool isMainMenu = true;
 	bool isQuitting = false;
-
-	//fight(gameWindow, actors.at(0), actors.at(1));
-	
-	//correction frame is used to approximate the characters animation frame
-	//this is only used when moving everything but the player
-	//TODO: FIND A BETTER WAY TO DO THIS
-	int correctionFrame = 0;
-
+		
 	while (1) {
 		if (isMainMenu) {
 			isQuitting = mainMenu(gameWindow);
@@ -96,8 +89,11 @@ int main(int argc, char* args[]) {
 			actors.at(0).fall();
 		}
 
+		//correction frame is only used when moving everything but the player
+		int correctionFrame = actors.at(0).getAnimationFrame();
 		//used for storing jump/fall direction/distance
 		int sideDistance = 0;
+
 		//check if the player is animating
 		if (actors.at(0).getCurrentAnimation() != none) {
 			if (actors.at(0).getCurrentAnimation() == crouching) {
@@ -270,11 +266,17 @@ int main(int argc, char* args[]) {
 		if (inputs.isKeyPressed(KEY_JUMP) || inputs.isKeyHeld(KEY_JUMP)) {
 			actors.at(0).crouch();
 		}
-		if (inputs.isKeyPressed(KEY_RIGHT) || inputs.isKeyHeld(KEY_RIGHT)) {
+		else if (inputs.isKeyPressed(KEY_RIGHT) || inputs.isKeyHeld(KEY_RIGHT)) {
 			actors.at(0).walkRight();
 		}
 		else if (inputs.isKeyPressed(KEY_LEFT) || inputs.isKeyHeld(KEY_LEFT)) {
 			actors.at(0).walkLeft();
+		}
+		if (inputs.isKeyPressed(SDL_SCANCODE_F)) {
+			if (actors.size() >= 2) {
+				fight(gameWindow, actors.at(0), actors.at(1));
+			}
+			inputs.clearKeys();
 		}
 		
 

@@ -168,6 +168,7 @@
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Sprites\attributes.png" />
     <Image Include="Sprites\basic animations.png" />
     <Image Include="Sprites\BLU.bmp" />
     <Image Include="Sprites\forest.png" />

@@ -100,5 +100,8 @@
     <Image Include="Sprites\text32.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Sprites\attributes.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

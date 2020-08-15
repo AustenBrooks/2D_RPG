@@ -14,10 +14,13 @@
 
 bool mainMenu(window& gameWindow);
 
+bool fight(window& gameWindow, character& player, character enemy);
+
+attributes chooseStats(window& gamewindow, character& player, int points);
+
 bool willCollide(character& player, vector<sprite> objects, facing direction);
 
 bool isGrounded(character& player, vector<sprite> objects);
 
-bool fight(window& gameWindow, character& player, character enemy);
 
 #endif

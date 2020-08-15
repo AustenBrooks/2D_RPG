@@ -106,9 +106,11 @@ public:
 
 	//getters
 	int getXpFromKill();
+	attributes getAttribute();
 	animation getCurrentAnimation();
 	facing getDirection();
 	sprite getSprite();
+	int getAnimationFrame();
 
 	//setters
 	void setSpriteSheet(string filename, int spriteSheetX, int spriteSheetY);

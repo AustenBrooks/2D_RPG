@@ -18,8 +18,10 @@ Todo:
 	//Add stats
 
 	//Add combat system
+	
+	//unload offscreen sprites
 
-	add character progression
+	//add character progression
 
 	//move the world when the character is in the center
 	

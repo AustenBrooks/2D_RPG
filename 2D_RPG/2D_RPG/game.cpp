@@ -91,10 +91,16 @@ bool mainMenu(window& gameWindow) {
 	}
 }
 
-bool fight(window& gameWindow, character& player, character enemy) {
+bool fight(window& gameWindow, character& player, character& enemy) {
 	input inputs;
 	SDL_Event events;
 	sprite background("Sprites/forest.png");
+
+	int eX = enemy.getSprite().getRectangle().x;
+	int eY = enemy.getSprite().getRectangle().y;
+
+	int pX = player.getSprite().getRectangle().x;
+	int pY = player.getSprite().getRectangle().y;
 
 	enemy.moveTo(650, 550);
 	bool isPaused = AUTO_COMBAT_PAUSE;
@@ -225,8 +231,13 @@ bool fight(window& gameWindow, character& player, character enemy) {
 	player.setScale(pScale);
 	enemy.setScale(eScale);
 
+	player.moveTo(pX, pY);
+	enemy.moveTo(eX, eY);
+
+
 	if (player.isAlive()) {
-		int points = player.gainXP(enemy.getXpFromKill());
+		int points = player.gainXP(10000000);//enemy.getXpFromKill());
+		std::cout << "points: " << points << std::endl;
 		if (points) {
 			player.levelAttributes(chooseStats(gameWindow, player, points));
 		}
@@ -240,34 +251,41 @@ bool fight(window& gameWindow, character& player, character enemy) {
 attributes chooseStats(window& gameWindow, character& player, int points) {
 	input inputs;
 	SDL_Event events;
-	sprite background("Sprites/mainMenu.png");
+	sprite background("Sprites/black.png");
 
-	attributes incAttr = { 0 };
+	attributes incAttr;
+	incAttr.strength = 0;
+	incAttr.endurance = 0;
+	incAttr.dexterity = 0;
+	incAttr.agility = 0;
+	incAttr.wisdom = 0;
+	incAttr.intelligence = 0;
+
 	enum button { strength = 0, dexterity = 1, wisdom = 2, endurance = 3, agility = 4, intelligence = 5 };
 	button cursor = strength;
 
 	vector<sprite> buttons;
 	{
-		sprite str(1000, 260, 222, 60, false, "Sprites/attributes.png", 0, 0, 1);
-		sprite dex(1000, 360, 222, 60, false, "Sprites/attributes.png", 222, 0, 1);
-		sprite wis(1000, 460, 222, 60, false, "Sprites/attributes.png", 444, 0, 1);
-		sprite end(1000, 260, 222, 60, false, "Sprites/attributes.png", 0, 60, 1);
-		sprite agi(1000, 360, 222, 60, false, "Sprites/attributes.png", 222, 60, 1);
-		sprite intel(1000, 460, 222, 60, false, "Sprites/attributes.png", 444, 60, 1);
+		sprite str(307, 300, 222, 60, false, "Sprites/attributes.png", 0, 0, 1);
+		sprite dex(529, 300, 222, 60, false, "Sprites/attributes.png", 222, 0, 1);
+		sprite wis(751, 300, 222, 60, false, "Sprites/attributes.png", 444, 0, 1);
+		sprite end(307, 360, 222, 60, false, "Sprites/attributes.png", 0, 60, 1);
+		sprite agi(529, 360, 222, 60, false, "Sprites/attributes.png", 222, 60, 1);
+		sprite intel(751, 360, 222, 60, false, "Sprites/attributes.png", 444, 60, 1);
 
 		buttons.push_back(str);
-		buttons.push_back(wis);
 		buttons.push_back(dex);
+		buttons.push_back(wis);
 		buttons.push_back(end);
 		buttons.push_back(agi);
 		buttons.push_back(intel);
 	}
 	while (1) {
-		int timeStart = SDL_GetTicks();
-
 		if (points == 0) {
 			return incAttr;
 		}
+
+		int timeStart = SDL_GetTicks();
 
 		buttons.at(0).setSpriteXY(buttons.at(0).getSpriteX(), 0);
 		buttons.at(1).setSpriteXY(buttons.at(1).getSpriteX(), 0);
@@ -330,22 +348,26 @@ attributes chooseStats(window& gameWindow, character& player, int points) {
 				temp += 3;
 			}
 			cursor = (button)temp;
+			std::cout << "pressing up" << std::endl;
 		}
 		//confirms selection
 		if (inputs.isKeyPressed(KEY_ENTER)) {
-			int temp = (int)cursor;
-			switch (temp) {
-			case 0:
+			if (cursor == strength) {
 				incAttr.strength += 1;
-			case 1:
+			}
+			else if (cursor == dexterity){
 				incAttr.dexterity += 1;
-			case 2:
+			}
+			else if (cursor == wisdom){
 				incAttr.wisdom += 1;
-			case 3:
+			}
+			else if (cursor == endurance){
 				incAttr.endurance += 1;
-			case 4:
+			}
+			else if (cursor == agility){
 				incAttr.agility += 1;
-			case 5:
+			}
+			else if (cursor == intelligence){
 				incAttr.intelligence += 1;
 			}
 			points--;

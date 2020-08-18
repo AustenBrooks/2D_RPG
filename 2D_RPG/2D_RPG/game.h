@@ -14,7 +14,7 @@
 
 bool mainMenu(window& gameWindow);
 
-bool fight(window& gameWindow, character& player, character enemy);
+bool fight(window& gameWindow, character& player, character& enemy);
 
 attributes chooseStats(window& gamewindow, character& player, int points);
 

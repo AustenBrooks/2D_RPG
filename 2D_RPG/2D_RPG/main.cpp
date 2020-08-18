@@ -273,10 +273,15 @@ int main(int argc, char* args[]) {
 			actors.at(0).walkLeft();
 		}
 		if (inputs.isKeyPressed(SDL_SCANCODE_F)) {
-			if (actors.size() >= 2) {
+			if (actors.size() >= 2 && actors.at(1).isAlive()) {
 				fight(gameWindow, actors.at(0), actors.at(1));
 			}
 			inputs.clearKeys();
+		}
+		if (inputs.isKeyPressed(SDL_SCANCODE_R)) {
+			while(!(actors.at(1).isAlive())){
+				actors.at(1).regen();
+			}
 		}
 		
 

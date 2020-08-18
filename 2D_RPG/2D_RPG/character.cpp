@@ -520,7 +520,7 @@ int character::gainXP(int xpGained) {
 
 void character::levelAttributes(attributes increaseAttribute) {
 	attribute.strength += increaseAttribute.strength;
-	attribute.endurance += increaseAttribute.strength;
+	attribute.endurance += increaseAttribute.endurance;
 	attribute.dexterity += increaseAttribute.dexterity;
 	attribute.agility += increaseAttribute.agility;
 	attribute.wisdom += increaseAttribute.wisdom;

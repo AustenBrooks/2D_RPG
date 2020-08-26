@@ -196,8 +196,11 @@ bool fight(window& gameWindow, character& player, character& enemy) {
 				player.regen();
 				enemy.regen();
 			}
-			allText.at(1).setText(player.displayStats(), 220, 500, .5);
-			allText.at(2).setText(enemy.displayStats(), 500, 500, .5);
+			string pStats = player.displayStats();
+			string eStats = enemy.displayStats();
+
+			allText.at(1).setText(pStats, 220, 500, .5);
+			allText.at(2).setText(eStats, 500, 500, .5);
 		}
 		else {
 			allText.at(0).setText("PAUSED", 550, 120, 1);
@@ -236,8 +239,7 @@ bool fight(window& gameWindow, character& player, character& enemy) {
 
 
 	if (player.isAlive()) {
-		int points = player.gainXP(10000000);//enemy.getXpFromKill());
-		std::cout << "points: " << points << std::endl;
+		int points = player.gainXP(enemy.getXpFromKill());
 		if (points) {
 			player.levelAttributes(chooseStats(gameWindow, player, points));
 		}
@@ -348,10 +350,9 @@ attributes chooseStats(window& gameWindow, character& player, int points) {
 				temp += 3;
 			}
 			cursor = (button)temp;
-			std::cout << "pressing up" << std::endl;
 		}
 		//confirms selection
-		if (inputs.isKeyPressed(KEY_ENTER)) {
+		if (inputs.isKeyPressed(KEY_SELECT)) {
 			if (cursor == strength) {
 				incAttr.strength += 1;
 			}

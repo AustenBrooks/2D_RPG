@@ -104,6 +104,7 @@ public:
 	int gainXP(int xpGained);
 	void levelAttributes(attributes increaseAttribute);
 	void calcStats();
+	void fullRestore();
 
 	//getters
 	int getXpFromKill();

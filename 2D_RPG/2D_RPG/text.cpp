@@ -613,6 +613,9 @@ void text::setText(string word, int xPos, int yPos, float scale) {
 			letter.moveTo(x, y);
 			letters.at(i) = letter;
 		}
+		else {
+			letters.at(i).moveTo(x, y);
+		}
 
 		x += letters.at(i).getRectangle().w * scale;
 		if (word.at(i) == '\n') {

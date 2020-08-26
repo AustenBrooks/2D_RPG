@@ -502,7 +502,7 @@ int character::gainXP(int xpGained) {
 	int points = 0;
 	
 	xp += xpGained;
-	while (xp > 100 * level) {
+	while (xp >= 100 * level) {
 		xp -= 100 * level;
 		level++;
 
@@ -513,6 +513,7 @@ int character::gainXP(int xpGained) {
 			points++;
 		}
 		calcStats();
+		fullRestore();
 	}
 
 	return points;
@@ -525,6 +526,8 @@ void character::levelAttributes(attributes increaseAttribute) {
 	attribute.agility += increaseAttribute.agility;
 	attribute.wisdom += increaseAttribute.wisdom;
 	attribute.intelligence += increaseAttribute.intelligence;
+	calcStats();
+	fullRestore();
 }
 
 void character::calcStats() {
@@ -543,9 +546,15 @@ void character::calcStats() {
 	spellMag = (float) attribute.intelligence / 10.0;
 }
 
+void character::fullRestore() {
+	currentHealth = health;
+	currentMagic = magic;
+	currentStamina = magic;
+}
+
 //getters
 int character::getXpFromKill() {
-	return level * 5;
+	return level * 20;
 }
 
 attributes character::getAttribute() {
